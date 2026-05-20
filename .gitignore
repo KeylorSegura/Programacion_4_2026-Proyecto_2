@@ -1,0 +1,27 @@
+# =====================
+# BACKEND (Spring Boot)
+# =====================
+proyecto_2_backend/target/
+proyecto_2_backend/.mvn/
+proyecto_2_backend/mvnw
+proyecto_2_backend/mvnw.cmd
+proyecto_2_backend/.idea/
+proyecto_2_backend/*.iml
+
+# Logs
+*.log
+
+# =====================
+# FRONTEND (Vite + React)
+# =====================
+proyecto_2_fronted/node_modules/
+proyecto_2_fronted/dist/
+proyecto_2_fronted/.vite/
+proyecto_2_fronted/.env
+
+# =====================
+# GENERAL
+# =====================
+.DS_Store
+.idea
+.vscode
