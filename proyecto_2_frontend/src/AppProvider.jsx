@@ -10,8 +10,49 @@ function AppProvider(props){
         puestos: []
     });
 
+    const [oferenteState, setOferenteState] = useState({
+
+        oferente: {
+
+            nombreUsuario: "",
+            clave: "",
+            nombre: "",
+            primerApellido: "",
+            nacionalidad: "",
+            telefono: "",
+            correoElectronico: "",
+            lugarResidencia: ""
+
+        },
+
+        error: ""
+
+    });
+
+    const [empresaState, setEmpresaState] = useState({
+
+        empresa: {
+            nombreUsuario: "",
+            clave: "",
+            nombre: "",
+            localizacion: "",
+            correoElectronico: "",
+            telefono: "",
+            descripcion: ""
+        },
+
+        error: ""
+
+    });
+
     return(
         <AppContext.Provider value={{
+            oferenteState,
+            setOferenteState,
+
+            empresaState,
+            setEmpresaState,
+
             busquedaPuestosState,
             setBusquedaPuestosState
 

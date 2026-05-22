@@ -4,6 +4,8 @@ import Principal from "./pages/publico/Principal.jsx";
 import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
 import BuscarPuestos from "./pages/publico/BuscarPuestos.jsx";
 import { AppProvider } from "@/AppProvider.jsx";
+import RegistrarOferente from "@/pages/publico/RegistrarOferente.jsx";
+import RegistrarEmpresa from "@/pages/publico/RegistrarEmpresa.jsx";
 
 function App() {
   return (
@@ -28,8 +30,8 @@ function Header() {
         </div>
 
         <nav className="navbar__nav">
-          <Link className="navbar__nav-link" to="/">Registro Empresa</Link>
-          <Link className="navbar__nav-link" to="/">Registro Oferente</Link>
+          <Link className="navbar__nav-link" to="/empresa/registrar">Registro Empresa</Link>
+          <Link className="navbar__nav-link" to="/oferente/registrar">Registro Oferente</Link>
           <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>
         </nav>
 
@@ -46,8 +48,8 @@ function Main() {
         <Routes>
           <Route exact path="/" element={<Principal />} />
           <Route exact path="/puestos" element={<BuscarPuestos />} />
-          {/*<Route exact path="/empresa/registrar" element={<div>Registro Empresa</div>} />*/}
-          {/*<Route exact path="/oferente/registrar" element={<div>Registro Oferente</div>} />*/}
+          <Route exact path="/empresa/registrar" element={<RegistrarEmpresa />} />
+          <Route exact path="/oferente/registrar" element={<RegistrarOferente />} />
           {/*<Route exact path="/login" element={<div>Login</div>} />*/}
         </Routes>
       </main>
