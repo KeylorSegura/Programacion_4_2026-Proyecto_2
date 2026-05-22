@@ -1,19 +1,19 @@
 import logo from './assets/logo.png';
 import './App.css';
-// import BuscarPuestos from "./pages/publico/BuscarPuestos.jsx";
 import Principal from "./pages/publico/Principal.jsx";
 import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
-// import { AppProvider } from "@/AppProvider.jsx";
+import BuscarPuestos from "./pages/publico/BuscarPuestos.jsx";
+import { AppProvider } from "@/AppProvider.jsx";
 
 function App() {
   return (
-      //<AppProvider>
+      <AppProvider>
         <BrowserRouter>
           <Header />
           <Main />
           <Footer />
         </BrowserRouter>
-      //</AppProvider>
+      </AppProvider>
   );
 }
 
@@ -30,7 +30,7 @@ function Header() {
         <nav className="navbar__nav">
           <Link className="navbar__nav-link" to="/">Registro Empresa</Link>
           <Link className="navbar__nav-link" to="/">Registro Oferente</Link>
-          <Link className="navbar__nav-link" to="/">Buscar puestos</Link>
+          <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>
         </nav>
 
         <div className="navbar__login">
@@ -45,7 +45,7 @@ function Main() {
       <main className="main">
         <Routes>
           <Route exact path="/" element={<Principal />} />
-          {/*<Route exact path="/puestos" element={<BuscarPuestos />} />*/}
+          <Route exact path="/puestos" element={<BuscarPuestos />} />
           {/*<Route exact path="/empresa/registrar" element={<div>Registro Empresa</div>} />*/}
           {/*<Route exact path="/oferente/registrar" element={<div>Registro Oferente</div>} />*/}
           {/*<Route exact path="/login" element={<div>Login</div>} />*/}
