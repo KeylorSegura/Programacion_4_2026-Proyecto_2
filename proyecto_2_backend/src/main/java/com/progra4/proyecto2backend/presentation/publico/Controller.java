@@ -24,16 +24,66 @@ public class Controller {
 
 
     @GetMapping("/principal")
-    public List<Puesto> ultimos5Puestos() {
+    public List<Map<String, Object>> ultimos5Puestos() {
+
         return puestos.findAll().stream()
-                .filter(p -> p.getTipoPublicacion() != null
-                        && p.getTipoPublicacion().equalsIgnoreCase("Publica"))
-                .filter(p -> p.getActivo() != null
-                        && p.getActivo() == 1)
-                .sorted((p1, p2) -> Long.compare(p2.getId(), p1.getId()))
+
+                .filter(p ->
+                        "Publica".equalsIgnoreCase(p.getTipoPublicacion())
+                                && p.getActivo() == 1
+                )
+
+                .sorted((p1, p2) ->
+                        Integer.compare(p2.getId(), p1.getId())
+                )
                 .limit(5)
+                .map(p -> {
+                    Map<String, Object> puestoMap = new HashMap<>();
+                    puestoMap.put("id", p.getId());
+                    puestoMap.put("descripcion", p.getDescripcion());
+                    puestoMap.put("salario", p.getSalario());
+
+                    Map<String, Object> empresaMap = new HashMap<>();
+
+                    if (p.getEmpresa() != null) {
+                        empresaMap.put("nombre", p.getEmpresa().getNombre());
+                    } else {
+                        empresaMap.put("nombre", "No disponible");
+                    }
+
+                    puestoMap.put("empresa", empresaMap);
+
+                    List<Map<String, Object>> caracteristicas =
+                            p.getPuestocaracteristicas().stream()
+                                    .map(pc -> {
+                                        Map<String, Object> pcMap = new HashMap<>();
+                                        pcMap.put("nivel", pc.getNivel());
+                                        Map<String, Object> caracteristicaMap =
+                                                new HashMap<>();
+                                        caracteristicaMap.put(
+                                                "id",
+                                                pc.getCaracteristica().getId()
+                                        );
+                                        caracteristicaMap.put(
+                                                "rutaCompleta",
+                                                pc.getCaracteristica().getRutaCompleta()
+                                        );
+                                        pcMap.put(
+                                                "caracteristica",
+                                                caracteristicaMap
+                                        );
+                                        return pcMap;
+                                    })
+                                    .collect(Collectors.toList());
+                    puestoMap.put(
+                            "puestocaracteristicas",
+                            caracteristicas
+                    );
+                    return puestoMap;
+                })
+
                 .toList();
-  }
+    }
 
 
 
