@@ -22,7 +22,17 @@ function RegistrarOferente() {
             ...oferenteState.oferente
         };
 
-        oferente[name] = value;
+        if (name === "id" || name === "clave") {
+
+            oferente.nombreUsuario = {
+                ...oferente.nombreUsuario,
+                [name]: value
+            };
+
+        } else {
+
+            oferente[name] = value;
+        }
 
         setOferenteState({
             ...oferenteState,
@@ -58,10 +68,16 @@ function RegistrarOferente() {
         alert("Oferente registrado");
 
         setOferenteState({
+
             ...oferenteState,
+
             oferente: {
-                nombreUsuario: "",
-                clave: "",
+
+                nombreUsuario: {
+                    id: "",
+                    clave: ""
+                },
+
                 nombre: "",
                 primerApellido: "",
                 nacionalidad: "",
@@ -111,12 +127,13 @@ function RegistrarOferente() {
                         className="form__input"
                         type="text"
                         id="nombreUsuario"
-                        name="nombreUsuario"
+                        name="id"
                         required
                         value={
                             oferenteState
                                 .oferente
                                 .nombreUsuario
+                                .id
                         }
                         onChange={handleFieldChange}
                     />
@@ -137,6 +154,7 @@ function RegistrarOferente() {
                         value={
                             oferenteState
                                 .oferente
+                                .nombreUsuario
                                 .clave
                         }
                         onChange={handleFieldChange}

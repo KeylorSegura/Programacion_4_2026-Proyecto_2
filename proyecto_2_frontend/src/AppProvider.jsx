@@ -14,8 +14,11 @@ function AppProvider(props){
 
         oferente: {
 
-            nombreUsuario: "",
-            clave: "",
+            nombreUsuario: {
+                id: "",
+                clave: ""
+            },
+
             nombre: "",
             primerApellido: "",
             nacionalidad: "",
@@ -32,8 +35,12 @@ function AppProvider(props){
     const [empresaState, setEmpresaState] = useState({
 
         empresa: {
-            nombreUsuario: "",
-            clave: "",
+
+            nombreUsuario: {
+                id: "",
+                clave: ""
+            },
+
             nombre: "",
             localizacion: "",
             correoElectronico: "",

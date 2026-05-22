@@ -2,14 +2,17 @@ package com.progra4.proyecto2backend.presentation.empresa;
 
 import com.progra4.proyecto2backend.data.EmpresaRepository;
 import com.progra4.proyecto2backend.data.UsuarioRepository;
+
 import com.progra4.proyecto2backend.logic.Empresa;
 import com.progra4.proyecto2backend.logic.Usuario;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.HttpStatus;
+
+import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController("empresa")
 @RequestMapping("/api/empresa")
@@ -17,34 +20,44 @@ import java.util.Map;
 public class Controller {
 
     @Autowired
-    private UsuarioRepository usuarios;
-
-    @Autowired
     private EmpresaRepository empresas;
 
-    @PostMapping("/registrar")
-    public void registrar(@RequestBody Map<String, String> body) {
+    @Autowired
+    private UsuarioRepository usuarios;
 
-        String nombreUsuario = body.get("nombreUsuario");
+    @PostMapping("/registrar")
+    public void create(
+            @RequestBody Empresa empresa
+    ) {
+
+        String nombreUsuario =
+                empresa.getNombreUsuario()
+                        .getId();
+
+        String clave =
+                empresa.getNombreUsuario()
+                        .getClave();
 
         if (usuarios.existsById(nombreUsuario)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT);
+
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "El nombre de usuario ya existe"
+            );
         }
 
-        Usuario usuario = new Usuario();
-        usuario.setId(nombreUsuario);
-        usuario.setClave(body.get("clave"));
-        usuario.setTipo("Empresa");
+        Usuario usuario = new Usuario(
+                nombreUsuario,
+                clave,
+                "Empresa"
+        );
+
         usuarios.save(usuario);
 
-        Empresa empresa = new Empresa();
         empresa.setNombreUsuario(usuario);
-        empresa.setNombre(body.get("nombre"));
-        empresa.setLocalizacion(body.get("localizacion"));
-        empresa.setCorreoElectronico(body.get("correoElectronico"));
-        empresa.setTelefono(body.get("telefono"));
-        empresa.setDescripcion(body.get("descripcion"));
+
         empresa.setEstado((byte) 0);
+
         empresas.save(empresa);
     }
 }

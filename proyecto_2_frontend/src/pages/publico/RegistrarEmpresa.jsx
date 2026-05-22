@@ -22,7 +22,19 @@ function RegistrarEmpresa() {
             ...empresaState.empresa
         };
 
-        empresa[name] = value;
+        if (name === "id" || name === "clave") {
+
+            empresa.nombreUsuario = {
+
+                ...empresa.nombreUsuario,
+
+                [name]: value
+            };
+
+        } else {
+
+            empresa[name] = value;
+        }
 
         setEmpresaState({
             ...empresaState,
@@ -58,10 +70,16 @@ function RegistrarEmpresa() {
         alert("Empresa registrada");
 
         setEmpresaState({
+
             ...empresaState,
+
             empresa: {
-                nombreUsuario: "",
-                clave: "",
+
+                nombreUsuario: {
+                    id: "",
+                    clave: ""
+                },
+
                 nombre: "",
                 localizacion: "",
                 correoElectronico: "",
@@ -110,13 +128,9 @@ function RegistrarEmpresa() {
                         className="form__input"
                         type="text"
                         id="nombreUsuario"
-                        name="nombreUsuario"
+                        name="id"
                         required
-                        value={
-                            empresaState
-                                .empresa
-                                .nombreUsuario
-                        }
+                        value={empresaState.empresa.nombreUsuario.id}
                         onChange={handleFieldChange}
                     />
 
@@ -133,11 +147,7 @@ function RegistrarEmpresa() {
                         id="clave"
                         name="clave"
                         required
-                        value={
-                            empresaState
-                                .empresa
-                                .clave
-                        }
+                        value={empresaState.empresa.nombreUsuario.clave}
                         onChange={handleFieldChange}
                     />
 
