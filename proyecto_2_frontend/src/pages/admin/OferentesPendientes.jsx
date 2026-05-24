@@ -7,9 +7,7 @@ function OferentesPendientes() {
 
     const backend = "http://localhost:8080/api/admin";
 
-    useEffect(() => {
-        handleList();
-    }, []);
+
 
     function handleList() {
 
@@ -33,6 +31,10 @@ function OferentesPendientes() {
 
         })();
     }
+
+    useEffect(() => {
+        handleList();
+    }, []);
 
     function handleAutorizar(id) {
 
