@@ -7,6 +7,10 @@ import { AppProvider } from "@/AppProvider.jsx";
 import RegistrarOferente from "@/pages/publico/RegistrarOferente.jsx";
 import RegistrarEmpresa from "@/pages/publico/RegistrarEmpresa.jsx";
 
+import DashboardAdmin from "@/pages/admin/DashboardAdmin.jsx";
+import EmpresasPendientes from "@/pages/admin/EmpresasPendientes.jsx";
+import OferentesPendientes from "@/pages/admin/OferentesPendientes.jsx";
+
 function App() {
   return (
       <AppProvider>
@@ -33,6 +37,10 @@ function Header() {
           <Link className="navbar__nav-link" to="/empresa/registrar">Registro Empresa</Link>
           <Link className="navbar__nav-link" to="/oferente/registrar">Registro Oferente</Link>
           <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>
+          <Link className="navbar__nav-link" to="/admin/dashboard">DashboardAdmin</Link>
+          <Link className="navbar__nav-link" to="/admin/empresas-pendientes">EmpresasPendientes</Link>
+          <Link className="navbar__nav-link" to="/admin/oferentes-pendientes">Oferentes Pendientes</Link>
+
         </nav>
 
         <div className="navbar__login">
@@ -50,6 +58,10 @@ function Main() {
           <Route exact path="/puestos" element={<BuscarPuestos />} />
           <Route exact path="/empresa/registrar" element={<RegistrarEmpresa />} />
           <Route exact path="/oferente/registrar" element={<RegistrarOferente />} />
+          <Route exact path="/admin/dashboard" element={<DashboardAdmin />}/>
+          <Route exact path="/admin/empresas-pendientes" element={<EmpresasPendientes />}/>
+          <Route exact path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
+
           {/*<Route exact path="/login" element={<div>Login</div>} />*/}
         </Routes>
       </main>

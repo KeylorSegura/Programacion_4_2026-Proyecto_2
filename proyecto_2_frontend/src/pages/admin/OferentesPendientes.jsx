@@ -1,0 +1,144 @@
+import { useEffect, useState } from 'react';
+import './Aprobaciones.css';
+
+function OferentesPendientes() {
+
+    const [oferentes, setOferentes] = useState([]);
+
+    const backend = "http://localhost:8080/api/admin";
+
+    useEffect(() => {
+        handleList();
+    }, []);
+
+    function handleList() {
+
+        const request = new Request(
+            backend + '/oferentes-pendientes',
+            { method: 'GET', headers: {} }
+        );
+
+        (async () => {
+
+            const response = await fetch(request);
+
+            if (!response.ok) {
+                alert("Error: " + response.status);
+                return;
+            }
+
+            const oferentes = await response.json();
+
+            setOferentes(oferentes);
+
+        })();
+    }
+
+    function handleAutorizar(id) {
+
+        const request = new Request(
+            backend + '/autorizarOferente/' + id,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+
+        (async () => {
+
+            const response = await fetch(request);
+
+            if (!response.ok) {
+                alert("Error: " + response.status);
+                return;
+            }
+
+            handleList();
+
+        })();
+    }
+
+    return (
+        <main className="aprobaciones">
+            <div className="aprobaciones__container">
+
+                <h2 className="aprobaciones__title">
+                    Oferentes pendientes
+                </h2>
+
+                <div className="aprobaciones__card">
+
+                    <List
+                        list={oferentes}
+                        handleAutorizar={handleAutorizar}
+                    />
+
+                </div>
+
+            </div>
+        </main>
+    );
+}
+
+function List({ list, handleAutorizar }) {
+
+    return (
+        <table className="aprobaciones__table">
+
+            <thead className="aprobaciones__head">
+            <tr className="aprobaciones__row">
+                <th className="aprobaciones__cell">
+                    Usuario
+                </th>
+
+                <th className="aprobaciones__cell aprobaciones__cell--action">
+                    Acción
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            {list.map(o => (
+
+                <Item
+                    key={o.id}
+                    oferente={o}
+                    handleAutorizar={handleAutorizar}
+                />
+
+            ))}
+
+            </tbody>
+
+        </table>
+    );
+}
+
+function Item({ oferente, handleAutorizar }) {
+
+    return (
+        <tr className="aprobaciones__row">
+
+            <td className="aprobaciones__cell">
+                {oferente.nombre}
+            </td>
+
+            <td className="aprobaciones__cell aprobaciones__cell--action">
+
+                <button
+                    className="aprobaciones__button"
+                    onClick={() => handleAutorizar(oferente.id)}
+                >
+                    Aprobar y generar clave
+                </button>
+
+            </td>
+
+        </tr>
+    );
+}
+
+export default OferentesPendientes;
