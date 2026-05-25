@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../../AppProvider";
+import s from './Registro.module.css';
 
 function RegistrarOferente() {
 
@@ -90,41 +91,41 @@ function RegistrarOferente() {
 
     return (
 
-        <div className="main__container page">
+        <div className={s.main__container}>
 
-            <h1 className="page__title">
+            <h1 className={s.page__title}>
                 Registrar Oferente
             </h1>
 
             {
                 oferenteState.error &&
                 (
-                    <div className="message--error">
+                    <div className= {s.message__error}>
                         <p>{oferenteState.error}</p>
                     </div>
                 )
             }
 
             <form
-                className="form"
+                className={s.form}
                 onSubmit={handleSave}
             >
 
-                <div className="form__section form__section--usuario">
+                <div className={s.form__section}>
 
-                    <h3 className="form__section-title">
+                    <h3 className={s.form__section_title}>
                         Datos de usuario
                     </h3>
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="nombreUsuario"
                     >
                         Nombre del usuario
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="nombreUsuario"
                         name="id"
@@ -139,14 +140,14 @@ function RegistrarOferente() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="clave"
                     >
                         Clave
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="password"
                         id="clave"
                         name="clave"
@@ -162,21 +163,21 @@ function RegistrarOferente() {
 
                 </div>
 
-                <div className="form__section form__section--oferente">
+                <div className={s.form__section}>
 
-                    <h3 className="form__section-title">
+                    <h3 className={s.form__section_title}>
                         Datos del oferente
                     </h3>
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="nombre"
                     >
                         Nombre del oferente
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="nombre"
                         name="nombre"
@@ -190,14 +191,14 @@ function RegistrarOferente() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="primerApellido"
                     >
                         Primer apellido
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="primerApellido"
                         name="primerApellido"
@@ -211,14 +212,14 @@ function RegistrarOferente() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="nacionalidad"
                     >
                         Nacionalidad
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="nacionalidad"
                         name="nacionalidad"
@@ -232,14 +233,14 @@ function RegistrarOferente() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="telefono"
                     >
                         Teléfono
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="telefono"
                         name="telefono"
@@ -253,14 +254,14 @@ function RegistrarOferente() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="correoElectronico"
                     >
                         Correo electrónico
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="email"
                         id="correoElectronico"
                         name="correoElectronico"
@@ -274,14 +275,14 @@ function RegistrarOferente() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="lugarResidencia"
                     >
                         Lugar de residencia
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="lugarResidencia"
                         name="lugarResidencia"
@@ -297,7 +298,7 @@ function RegistrarOferente() {
                 </div>
 
                 <button
-                    className="form__button form__button--submit"
+                    className={s.form__button}
                     type="submit"
                 >
                     Guardar Oferente

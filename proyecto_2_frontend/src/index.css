@@ -50,13 +50,22 @@
   }
 }
 
-body {
+html, body {
+  height: 100%;
   margin: 0;
 }
 
-#root {
+body {
   width: 100%;
-  min-height: 100svh;
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  flex: 1;
+  /*min-height: 100svh;*/
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

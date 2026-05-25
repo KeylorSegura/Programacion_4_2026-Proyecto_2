@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AppContext } from "../../AppProvider";
+import s from './Registro.module.css';
 
 function RegistrarEmpresa() {
 
@@ -91,41 +92,41 @@ function RegistrarEmpresa() {
 
     return (
 
-        <div className="main__container page">
+        <div className={s.main__container}>
 
-            <h1 className="page__title">
+            <h1 className={s.page__title}>
                 Registrar Empresa
             </h1>
 
             {
                 empresaState.error &&
                 (
-                    <div className="message--error">
+                    <div className={s.message__error}>
                         <p>{empresaState.error}</p>
                     </div>
                 )
             }
 
             <form
-                className="form"
+                className={s.form}
                 onSubmit={handleSave}
             >
 
-                <div className="form__section form__section--usuario">
+                <div className={s.form__section}>
 
-                    <h3 className="form__section-title">
+                    <h3 className={s.form__section_title}>
                         Datos de usuario
                     </h3>
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="nombreUsuario"
                     >
                         Nombre del usuario
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="nombreUsuario"
                         name="id"
@@ -135,14 +136,14 @@ function RegistrarEmpresa() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="clave"
                     >
                         Clave
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="password"
                         id="clave"
                         name="clave"
@@ -153,21 +154,21 @@ function RegistrarEmpresa() {
 
                 </div>
 
-                <div className="form__section form__section--empresa">
+                <div className={s.form__section}>
 
-                    <h3 className="form__section-title">
+                    <h3 className={s.form__section_title}>
                         Datos de la empresa
                     </h3>
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="nombre"
                     >
                         Nombre de la empresa
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="nombre"
                         name="nombre"
@@ -181,14 +182,14 @@ function RegistrarEmpresa() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="localizacion"
                     >
                         Localización
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="localizacion"
                         name="localizacion"
@@ -202,14 +203,14 @@ function RegistrarEmpresa() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="correoElectronico"
                     >
                         Correo electrónico
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="email"
                         id="correoElectronico"
                         name="correoElectronico"
@@ -223,14 +224,14 @@ function RegistrarEmpresa() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="telefono"
                     >
                         Teléfono
                     </label>
 
                     <input
-                        className="form__input"
+                        className={s.form__input}
                         type="text"
                         id="telefono"
                         name="telefono"
@@ -244,14 +245,14 @@ function RegistrarEmpresa() {
                     />
 
                     <label
-                        className="form__label"
+                        className={s.form__label}
                         htmlFor="descripcion"
                     >
                         Descripción
                     </label>
 
                     <textarea
-                        className="form__textarea"
+                        className={s.form__textarea}
                         id="descripcion"
                         name="descripcion"
                         required
@@ -266,7 +267,7 @@ function RegistrarEmpresa() {
                 </div>
 
                 <button
-                    className="form__button form__button--submit"
+                    className={s.form__button}
                     type="submit"
                 >
                     Guardar Empresa
