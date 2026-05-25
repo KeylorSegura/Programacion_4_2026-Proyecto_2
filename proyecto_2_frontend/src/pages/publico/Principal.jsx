@@ -88,13 +88,13 @@ function Principal() {
                         {puestoSeleccionado.empresa.nombre}
                     </h3>
 
-                    <h2>{puestoSeleccionado.descripcion}</h2>
+                    <h2 className={s.card__description}>{puestoSeleccionado.descripcion}</h2>
 
                     <p className={s.card__salary}>
                         ₡ {puestoSeleccionado.salario.toFixed(2)}
                     </p>
 
-                    <ul>
+                    <ul className={s.card__list}>
                         {puestoSeleccionado.puestocaracteristicas.map(pc => (
                             <li key={pc.caracteristica.id}>
                                 <span>{pc.caracteristica.rutaCompleta}</span> -
@@ -103,7 +103,7 @@ function Principal() {
                         ))}
                     </ul>
 
-                    <button onClick={cerrarDetalle}>Cerrar</button>
+                    <button  onClick={cerrarDetalle}>Cerrar</button>
                 </Modal>
             )}
         </div>
