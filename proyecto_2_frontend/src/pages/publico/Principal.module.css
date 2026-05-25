@@ -1,11 +1,16 @@
+
+
 .page__main {
     display: flex;
-    justify-content: center;
-    min-height: 81.5vh;
+    justify-content: flex-start;
+    width: 100%;
 }
+
+
 
 .page__container {
     padding: 40px 60px;
+    width: 100%;
 }
 
 .page__title {
@@ -42,17 +47,19 @@
 
 .card__title {
     margin-top: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     color: #0F172B;
 }
 
 .card__description {
+    margin-top: 5px;
     margin-bottom: 5px;
     color: #56657B;
 }
 
 .card__salary {
     font-weight: bold;
+    margin-top: 5px;
     margin-bottom: 15px;
     color: #1D293D;
 }
@@ -150,6 +157,7 @@
     margin-top: 10px;
     padding-left: 20px;
     color: #56657B;
+    margin-bottom: 20px;
 }
 
 .card__list-item {
@@ -159,4 +167,6 @@
 .card__skill {
     font-weight: 500;
 }
+
+
 

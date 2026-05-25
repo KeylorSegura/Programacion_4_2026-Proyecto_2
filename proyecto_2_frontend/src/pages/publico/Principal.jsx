@@ -49,63 +49,65 @@ function Principal() {
     }
 
     return (
-        <div className={s.page__container}>
-            <h1 className={s.page__title}>Bolsa de Empleo</h1>
-            <p className={s.page__subtitle}>Últimos 5 puestos públicos</p>
+        <div className={s.page__main}>
+            <div className={s.page__container}>
+                <h1 className={s.page__title}>Bolsa de Empleo</h1>
+                <p className={s.page__subtitle}>Últimos 5 puestos públicos</p>
 
-            {puestos.length === 0 ? (
-                <p className={s.page__empty}>No hay puestos disponibles.</p>
-            ) : (
-                <div className={s.jobs}>
-                    {puestos.map(p => (
-                        <div className={s.card} key={p.id}>
-                            <h3 className={s.card__title}>{p.empresa.nombre}</h3>
-                            <p className={s.card__description}>{p.descripcion}</p>
-                            <p className={s.card__salary}>
-                                ₡ {p.salario.toFixed(2)}
-                            </p>
+                {puestos.length === 0 ? (
+                    <p className={s.page__empty}>No hay puestos disponibles.</p>
+                ) : (
+                    <div className={s.jobs}>
+                        {puestos.map(p => (
+                            <div className={s.card} key={p.id}>
+                                <h3 className={s.card__title}>{p.empresa.nombre}</h3>
+                                <p className={s.card__description}>{p.descripcion}</p>
+                                <p className={s.card__salary}>
+                                    ₡ {p.salario.toFixed(2)}
+                                </p>
 
-                            <button
-                                className={s.card__button}
-                                onClick={() => abrirDetalle(p)}
-                            >
-                                Ver detalle
-                            </button>
-                        </div>
-                    ))}
-                </div>
-            )}
-
-            {puestoSeleccionado && (
-                <Modal
-                    isOpen={modalOpen}
-                    onRequestClose={cerrarDetalle}
-                    contentLabel="Detalle del Puesto"
-                    className={s.modal}
-                    overlayClassName={s.overlay}
-                >
-                    <h3 className={s.card__title}>
-                        {puestoSeleccionado.empresa.nombre}
-                    </h3>
-
-                    <h2 className={s.card__description}>{puestoSeleccionado.descripcion}</h2>
-
-                    <p className={s.card__salary}>
-                        ₡ {puestoSeleccionado.salario.toFixed(2)}
-                    </p>
-
-                    <ul className={s.card__list}>
-                        {puestoSeleccionado.puestocaracteristicas.map(pc => (
-                            <li key={pc.caracteristica.id}>
-                                <span>{pc.caracteristica.rutaCompleta}</span> -
-                                Nivel: <span>{pc.nivel}</span>
-                            </li>
+                                <button
+                                    className={s.card__button}
+                                    onClick={() => abrirDetalle(p)}
+                                >
+                                    Ver detalle
+                                </button>
+                            </div>
                         ))}
-                    </ul>
+                    </div>
+                )}
 
-                    <button  onClick={cerrarDetalle}>Cerrar</button>
-                </Modal>
-            )}
+                {puestoSeleccionado && (
+                    <Modal
+                        isOpen={modalOpen}
+                        onRequestClose={cerrarDetalle}
+                        contentLabel="Detalle del Puesto"
+                        className={s.modal}
+                        overlayClassName={s.overlay}
+                    >
+                        <h3 className={s.card__title}>
+                            {puestoSeleccionado.empresa.nombre}
+                        </h3>
+
+                        <h2 className={s.card__description}>{puestoSeleccionado.descripcion}</h2>
+
+                        <p className={s.card__salary}>
+                            ₡ {puestoSeleccionado.salario.toFixed(2)}
+                        </p>
+
+                        <ul className={s.card__list}>
+                            {puestoSeleccionado.puestocaracteristicas.map(pc => (
+                                <li key={pc.caracteristica.id}>
+                                    <span>{pc.caracteristica.rutaCompleta}</span> -
+                                    Nivel: <span>{pc.nivel}</span>
+                                </li>
+                            ))}
+                        </ul>
+
+                        <button  onClick={cerrarDetalle}>Cerrar</button>
+                    </Modal>
+                )}
+            </div>
         </div>
     );
 }
