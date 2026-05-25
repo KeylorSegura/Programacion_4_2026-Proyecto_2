@@ -27,31 +27,19 @@ public class Controller {
 
 
     @PostMapping("/registrar")
-    public void create(
-            @RequestBody Oferente oferente
-    ) {
+    public void create(@RequestBody Oferente oferente) {
 
-        String nombreUsuario =
-                oferente.getNombreUsuario()
-                        .getId();
+        String nombreUsuario = oferente.getNombreUsuario().getId();
 
-        String clave =
-                oferente.getNombreUsuario()
-                        .getClave();
+        String clave = oferente.getNombreUsuario() .getClave();
 
         if (usuarios.existsById(nombreUsuario)) {
-
             throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "El nombre de usuario ya existe"
+                    HttpStatus.CONFLICT, "El nombre de usuario ya existe"
             );
         }
 
-        Usuario usuario = new Usuario(
-                nombreUsuario,
-                clave,
-                "Oferente"
-        );
+        Usuario usuario = new Usuario(nombreUsuario, clave,"Oferente");
 
         usuarios.save(usuario);
 
