@@ -46,7 +46,7 @@ function RegistrarOferente() {
         event.preventDefault();
 
         const request = new Request(
-            backend + "/oferente/registrar",
+            backend + "/publico/registrar/oferente",
             {
                 method: "POST",
                 headers: {

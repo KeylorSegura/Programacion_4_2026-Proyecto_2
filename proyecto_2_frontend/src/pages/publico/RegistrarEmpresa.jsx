@@ -48,7 +48,7 @@ function RegistrarEmpresa() {
         event.preventDefault();
 
         const request = new Request(
-            backend + "/empresa/registrar",
+            backend + "/publico/registrar/empresa",
             {
                 method: "POST",
                 headers: {
