@@ -57,6 +57,7 @@ main {
     font-size: 1rem;
     transition: border 0.3s, box-shadow 0.3s;
     background-color: white;
+    color: black;
 }
 
 .form__input:focus {
@@ -102,6 +103,8 @@ main {
     min-height: 100px;
     transition: border 0.3s, box-shadow 0.3s;
     background-color: white;
+    color: black;
+
 }
 
 .form__textarea:focus {

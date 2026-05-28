@@ -93,9 +93,7 @@ function RegistrarOferente() {
 
         <div className={s.main__container}>
 
-            <h1 className={s.page__title}>
-                Registrar Oferente
-            </h1>
+            <h1 className={s.page__title}>Registrar Oferente</h1>
 
             {
                 oferenteState.error &&
@@ -106,203 +104,53 @@ function RegistrarOferente() {
                 )
             }
 
-            <form
-                className={s.form}
-                onSubmit={handleSave}
-            >
+            <form className={s.form} onSubmit={handleSave}>
 
                 <div className={s.form__section}>
 
-                    <h3 className={s.form__section_title}>
-                        Datos de usuario
-                    </h3>
+                    <h3 className={s.form__section_title}>Datos de usuario</h3>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="nombreUsuario"
-                    >
-                        Nombre del usuario
-                    </label>
+                    <label className={s.form__label} htmlFor="nombreUsuario">Nombre del usuario</label>
 
-                    <input
-                        className={s.form__input}
-                        type="text"
-                        id="nombreUsuario"
-                        name="id"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .nombreUsuario
-                                .id
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="text" id="nombreUsuario" name="id" required value={oferenteState.oferente.nombreUsuario.id} onChange={handleFieldChange}/>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="clave"
-                    >
-                        Clave
-                    </label>
+                    <label className={s.form__label} htmlFor="clave">Clave</label>
 
-                    <input
-                        className={s.form__input}
-                        type="password"
-                        id="clave"
-                        name="clave"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .nombreUsuario
-                                .clave
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="password" id="clave" name="clave" required value={oferenteState.oferente.nombreUsuario.clave} onChange={handleFieldChange}/>
 
                 </div>
 
                 <div className={s.form__section}>
 
-                    <h3 className={s.form__section_title}>
-                        Datos del oferente
-                    </h3>
+                    <h3 className={s.form__section_title}>Datos del oferente</h3>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="nombre"
-                    >
-                        Nombre del oferente
-                    </label>
+                    <label className={s.form__label} htmlFor="nombre">Nombre del oferente</label>
 
-                    <input
-                        className={s.form__input}
-                        type="text"
-                        id="nombre"
-                        name="nombre"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .nombre
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="text" id="nombre" name="nombre" required value={oferenteState.oferente.nombre} onChange={handleFieldChange}/>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="primerApellido"
-                    >
-                        Primer apellido
-                    </label>
+                    <label className={s.form__label} htmlFor="primerApellido">Primer apellido</label>
 
-                    <input
-                        className={s.form__input}
-                        type="text"
-                        id="primerApellido"
-                        name="primerApellido"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .primerApellido
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="text" id="primerApellido" name="primerApellido" required value={oferenteState.oferente.primerApellido} onChange={handleFieldChange}/>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="nacionalidad"
-                    >
-                        Nacionalidad
-                    </label>
+                    <label className={s.form__label} htmlFor="nacionalidad">Nacionalidad</label>
 
-                    <input
-                        className={s.form__input}
-                        type="text"
-                        id="nacionalidad"
-                        name="nacionalidad"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .nacionalidad
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="text" id="nacionalidad" name="nacionalidad" required value={oferenteState.oferente.nacionalidad} onChange={handleFieldChange}/>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="telefono"
-                    >
-                        Teléfono
-                    </label>
+                    <label className={s.form__label} htmlFor="telefono">Teléfono</label>
 
-                    <input
-                        className={s.form__input}
-                        type="text"
-                        id="telefono"
-                        name="telefono"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .telefono
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="text" id="telefono" name="telefono" required value={oferenteState.oferente.telefono} onChange={handleFieldChange}/>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="correoElectronico"
-                    >
-                        Correo electrónico
-                    </label>
+                    <label className={s.form__label} htmlFor="correoElectronico">Correo electrónico</label>
 
-                    <input
-                        className={s.form__input}
-                        type="email"
-                        id="correoElectronico"
-                        name="correoElectronico"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .correoElectronico
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="email" id="correoElectronico" name="correoElectronico" required value={oferenteState.oferente.correoElectronico} onChange={handleFieldChange}/>
 
-                    <label
-                        className={s.form__label}
-                        htmlFor="lugarResidencia"
-                    >
-                        Lugar de residencia
-                    </label>
+                    <label className={s.form__label} htmlFor="lugarResidencia">Lugar de residencia</label>
 
-                    <input
-                        className={s.form__input}
-                        type="text"
-                        id="lugarResidencia"
-                        name="lugarResidencia"
-                        required
-                        value={
-                            oferenteState
-                                .oferente
-                                .lugarResidencia
-                        }
-                        onChange={handleFieldChange}
-                    />
+                    <input className={s.form__input} type="text" id="lugarResidencia" name="lugarResidencia" required value={oferenteState.oferente.lugarResidencia} onChange={handleFieldChange}/>
 
                 </div>
 
-                <button
-                    className={s.form__button}
-                    type="submit"
-                >
-                    Guardar Oferente
-                </button>
+                <button className={s.form__button} type="submit">Guardar Oferente</button>
 
             </form>
 

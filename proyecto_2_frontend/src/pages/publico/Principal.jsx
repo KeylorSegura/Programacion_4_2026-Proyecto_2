@@ -62,16 +62,9 @@ function Principal() {
                             <div className={s.card} key={p.id}>
                                 <h3 className={s.card__title}>{p.empresa.nombre}</h3>
                                 <p className={s.card__description}>{p.descripcion}</p>
-                                <p className={s.card__salary}>
-                                    ₡ {p.salario.toFixed(2)}
-                                </p>
+                                <p className={s.card__salary}>₡ {p.salario.toFixed(2)}</p>
 
-                                <button
-                                    className={s.card__button}
-                                    onClick={() => abrirDetalle(p)}
-                                >
-                                    Ver detalle
-                                </button>
+                                <button className={s.card__button} onClick={() => abrirDetalle(p)}>Ver detalle</button>
                             </div>
                         ))}
                     </div>
@@ -85,15 +78,11 @@ function Principal() {
                         className={s.modal}
                         overlayClassName={s.overlay}
                     >
-                        <h3 className={s.card__title}>
-                            {puestoSeleccionado.empresa.nombre}
-                        </h3>
+                        <h3 className={s.card__title}>{puestoSeleccionado.empresa.nombre}</h3>
 
                         <h2 className={s.card__description}>{puestoSeleccionado.descripcion}</h2>
 
-                        <p className={s.card__salary}>
-                            ₡ {puestoSeleccionado.salario.toFixed(2)}
-                        </p>
+                        <p className={s.card__salary}>₡ {puestoSeleccionado.salario.toFixed(2)}</p>
 
                         <ul className={s.card__list}>
                             {puestoSeleccionado.puestocaracteristicas.map(pc => (
