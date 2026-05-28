@@ -11,4 +11,8 @@ public interface CaracteristicaRepository extends JpaRepository<Caracteristica, 
     List<Caracteristica> findRoots();
 
     List<Caracteristica> padre(Caracteristica padre);
+
+    List<Caracteristica> findByPadreIsNull();
+
+    List<Caracteristica> findByPadreId(Integer padreId);
 }

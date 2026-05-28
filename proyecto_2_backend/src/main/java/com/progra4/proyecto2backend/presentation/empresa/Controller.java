@@ -25,39 +25,5 @@ public class Controller {
     @Autowired
     private UsuarioRepository usuarios;
 
-    @PostMapping("/registrar")
-    public void create(
-            @RequestBody Empresa empresa
-    ) {
 
-        String nombreUsuario =
-                empresa.getNombreUsuario()
-                        .getId();
-
-        String clave =
-                empresa.getNombreUsuario()
-                        .getClave();
-
-        if (usuarios.existsById(nombreUsuario)) {
-
-            throw new ResponseStatusException(
-                    HttpStatus.CONFLICT,
-                    "El nombre de usuario ya existe"
-            );
-        }
-
-        Usuario usuario = new Usuario(
-                nombreUsuario,
-                clave,
-                "Empresa"
-        );
-
-        usuarios.save(usuario);
-
-        empresa.setNombreUsuario(usuario);
-
-        empresa.setEstado((byte) 0);
-
-        empresas.save(empresa);
-    }
 }

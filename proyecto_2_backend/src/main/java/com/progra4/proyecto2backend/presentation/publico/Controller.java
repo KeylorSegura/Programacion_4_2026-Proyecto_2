@@ -129,11 +129,7 @@ public class Controller {
     public List<Map<String, Object>> getCaracteristicasRaiz() {
         try {
             return caracteristicas.findRoots().stream()
-                    .sorted(
-                            Comparator.comparing(
-                                    Caracteristica::getNombre
-                            )
-                    )
+                    .sorted(Comparator.comparing(Caracteristica::getNombre))
                     .map(this::convertirCaracteristica)
                     .toList();
         } catch (Exception e) {
@@ -147,40 +143,18 @@ public class Controller {
     public List<Map<String, Object>> buscarPorCaracteristicas(@RequestBody List<Integer> caracteristicaIds) {
         try {
             List<Set<Integer>> grupos = caracteristicaIds.stream()
-
                     .map(this::obtenerIdsConDescendientes)
-
                     .toList();
             return puestos.findAll().stream()
-                    .filter(p ->
-                            "Publica".equalsIgnoreCase(
-                                    p.getTipoPublicacion()
-                            )
-                                    &&
-                                    p.getActivo() == 1
-                    )
+                    .filter(p -> "Publica".equalsIgnoreCase(p.getTipoPublicacion()) && p.getActivo() == 1)
                     .filter(puesto -> {
                         if (grupos.isEmpty()) {
                             return true;
                         }
-                        Set<Integer> idsDelPuesto =
-                                puesto.getPuestocaracteristicas().stream()
-                                        .map(pc ->
-                                                pc.getCaracteristica().getId()
-                                        )
-                                        .collect(Collectors.toSet());
-                        return grupos.stream()
-                                .allMatch(grupo ->
-                                        grupo.stream()
-                                                .anyMatch(idsDelPuesto::contains)
-                                );
+                        Set<Integer> idsDelPuesto = puesto.getPuestocaracteristicas().stream().map(pc ->pc.getCaracteristica().getId()).collect(Collectors.toSet());
+                        return grupos.stream().allMatch(grupo -> grupo.stream().anyMatch(idsDelPuesto::contains));
                     })
-                    .sorted((p1, p2) ->
-                            Integer.compare(
-                                    p2.getId(),
-                                    p1.getId()
-                            )
-                    )
+                    .sorted((p1, p2) -> Integer.compare(p2.getId(), p1.getId()))
                     .map(this::convertirPuesto)
                     .toList();
 
@@ -199,10 +173,7 @@ public class Controller {
         map.put("nombre", c.getNombre());
         List<Map<String, Object>> hijos =
                 c.getCaracteristicas().stream()
-                        .sorted(
-                                Comparator.comparing(
-                                        Caracteristica::getNombre)
-                        )
+                        .sorted(Comparator.comparing(Caracteristica::getNombre))
                         .map(this::convertirCaracteristica)
                         .toList();
 

@@ -52,6 +52,27 @@ function AppProvider(props){
 
     });
 
+    const [habilidadesState, setHabilidadesState] = useState({
+        habilidades: [],
+
+        caracteristicasActuales: [],
+
+        ruta: [],
+
+        habilidad: {
+            caracteristicaId: "",
+            nivel: ""
+        }
+    });
+
+    const [cvState, setCvState] = useState({
+
+        archivo: null,
+
+        tieneCV: false
+
+    });
+
     return(
         <AppContext.Provider value={{
             oferenteState,
@@ -61,7 +82,13 @@ function AppProvider(props){
             setEmpresaState,
 
             busquedaPuestosState,
-            setBusquedaPuestosState
+            setBusquedaPuestosState,
+
+            habilidadesState,
+            setHabilidadesState,
+
+            cvState,
+            setCvState
 
         }}>
             {props.children}
