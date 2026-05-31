@@ -10,6 +10,9 @@ import RegistrarEmpresa from "@/pages/publico/RegistrarEmpresa.jsx";
 import DashboardAdmin from "@/pages/admin/DashboardAdmin.jsx";
 import EmpresasPendientes from "@/pages/admin/EmpresasPendientes.jsx";
 import OferentesPendientes from "@/pages/admin/OferentesPendientes.jsx";
+import MisHabilidades from "@/pages/oferente/MisHabilidades.jsx";
+import MiCV from "@/pages/oferente/MiCV.jsx";
+import Login from "@/pages/publico/Login.jsx";
 
 import DashboardEmpresa from "@/pages/empresa/DashboardEmpresa.jsx";
 import MisPuestos from "@/pages/empresa/MisPuestos.jsx";
@@ -67,6 +70,7 @@ function Main() {
           <Route exact path="/admin/dashboard" element={<DashboardAdmin />}/>
           <Route exact path="/admin/empresas-pendientes" element={<EmpresasPendientes />}/>
           <Route exact path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
+          <Route exact path="/login" element={<Login/>} />
 
           <Route exact path="/empresa/dashboard" element={<DashboardEmpresa />} />
           <Route exact path="/empresa/puestos" element={<MisPuestos />} />
@@ -74,7 +78,6 @@ function Main() {
           <Route exact path="/empresa/candidatos" element={<Candidatos />} />
           <Route exact path="/empresa/candidatos/detalle" element={<DetalleCandidato />} />
 
-          {/*<Route exact path="/login" element={<div>Login</div>} />*/}
         </Routes>
       </main>
   );

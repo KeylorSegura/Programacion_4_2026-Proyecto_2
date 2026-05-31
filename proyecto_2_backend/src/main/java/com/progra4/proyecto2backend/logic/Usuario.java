@@ -26,4 +26,7 @@ public class Usuario {
     @Column(name = "tipo", length = 45)
     private String tipo;
 
+    public String getRol(){
+        return tipo;
+    }
 }

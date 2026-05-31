@@ -1,19 +1,24 @@
 package com.progra4.proyecto2backend.presentation.security;
 
+import com.progra4.proyecto2backend.data.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
-
 import java.util.Arrays;
 
 @Configuration
 @AllArgsConstructor
 public class SecurityConfig {
+    private final JwtConfig jwtConfig;
+    private final UsuarioRepository usuarioRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -29,7 +34,18 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement -> sessionManagement
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .anyRequest().permitAll())
+                        .requestMatchers("/api/publico/**").permitAll()
+                        .requestMatchers("/api/empresa/**").hasAnyAuthority("Empresa")
+                        .requestMatchers("/api/oferente/**").hasAnyAuthority("Oferente")
+                        .requestMatchers("/api/admin/**").hasAnyAuthority("Administrador")
+          // .requestMatchers("/**").permitAll() HABILITA FRONTEND
+                        .anyRequest().authenticated())
+                .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()))
                 .build();
+    }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withSecretKey(jwtConfig.getSecretKey()).build();
     }
 }

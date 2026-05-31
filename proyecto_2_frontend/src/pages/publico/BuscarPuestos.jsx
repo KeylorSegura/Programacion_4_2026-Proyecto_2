@@ -118,9 +118,7 @@ function BuscarPuestos() {
                     ))
             }
 
-            <button onClick={handleFiltrar}>
-                Filtrar
-            </button>
+            <button onClick={handleFiltrar}>Filtrar</button>
 
             <h3>Resultados</h3>
 
@@ -129,20 +127,11 @@ function BuscarPuestos() {
 
                     <div key={puesto.id}>
 
-                        <p>
-                            <strong>Empresa:</strong>
-                            {puesto.empresa.nombre}
-                        </p>
+                        <p><strong>Empresa:</strong>{puesto.empresa.nombre}</p>
 
-                        <p>
-                            <strong>Descripción:</strong>
-                            {puesto.descripcion}
-                        </p>
+                        <p><strong>Descripción:</strong>{puesto.descripcion}</p>
 
-                        <p>
-                            <strong>Salario:</strong>
-                            ₡ {puesto.salario}
-                        </p>
+                        <p><strong>Salario:</strong>₡ {puesto.salario}</p>
 
                     </div>
 
@@ -153,43 +142,18 @@ function BuscarPuestos() {
     );
 }
 
-function CaracteristicaNodo({
-                                nodo,
-                                seleccionadas,
-                                handleCheckbox
-                            }) {
-
+function CaracteristicaNodo({nodo, seleccionadas, handleCheckbox}) {
     return (
-
         <div>
-
             <details>
-
                 <summary>
-
-                    <input
-                        type="checkbox"
-
-                        checked={
-                            seleccionadas.includes(nodo.id)
-                        }
-
-                        onChange={(e) =>
-                            handleCheckbox(
-                                nodo.id,
-                                e.target.checked
-                            )
-                        }
-                    />
-
+                    <input type="checkbox" checked={seleccionadas.includes(nodo.id)} onChange={(e) => handleCheckbox(nodo.id, e.target.checked)}/>
                     {nodo.nombre}
-
                 </summary>
 
                 {
                     nodo.caracteristicas &&
                     nodo.caracteristicas.map(hijo => (
-
                         <CaracteristicaNodo
                             key={hijo.id}
                             nodo={hijo}
