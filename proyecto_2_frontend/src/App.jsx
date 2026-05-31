@@ -14,6 +14,12 @@ import MisHabilidades from "@/pages/oferente/MisHabilidades.jsx";
 import MiCV from "@/pages/oferente/MiCV.jsx";
 import Login from "@/pages/publico/Login.jsx";
 
+import DashboardEmpresa from "@/pages/empresa/DashboardEmpresa.jsx";
+import MisPuestos from "@/pages/empresa/MisPuestos.jsx";
+import NuevoPuesto from "@/pages/empresa/NuevoPuesto.jsx";
+import Candidatos from "@/pages/empresa/Candidatos.jsx";
+import DetalleCandidato from "@/pages/empresa/DetalleCandidato.jsx";
+
 function App() {
   return (
       <AppProvider>
@@ -65,6 +71,13 @@ function Main() {
           <Route exact path="/admin/empresas-pendientes" element={<EmpresasPendientes />}/>
           <Route exact path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
           <Route exact path="/login" element={<Login/>} />
+
+          <Route exact path="/empresa/dashboard" element={<DashboardEmpresa />} />
+          <Route exact path="/empresa/puestos" element={<MisPuestos />} />
+          <Route exact path="/empresa/puestos/nuevo" element={<NuevoPuesto />} />
+          <Route exact path="/empresa/candidatos" element={<Candidatos />} />
+          <Route exact path="/empresa/candidatos/detalle" element={<DetalleCandidato />} />
+
         </Routes>
       </main>
   );
