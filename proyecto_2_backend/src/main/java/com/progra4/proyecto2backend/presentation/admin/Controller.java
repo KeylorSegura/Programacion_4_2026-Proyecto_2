@@ -5,11 +5,13 @@ import com.progra4.proyecto2backend.data.CaracteristicaRepository;
 import com.progra4.proyecto2backend.data.OferenteRepository;
 
 import com.progra4.proyecto2backend.data.PuestoRepository;
+import com.progra4.proyecto2backend.logic.Caracteristica;
 import com.progra4.proyecto2backend.logic.Empresa;
 import com.progra4.proyecto2backend.logic.Oferente;
 import com.progra4.proyecto2backend.logic.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,18 +24,6 @@ public class Controller {
 
     @Autowired
     private Service service;
-
-    @Autowired
-    private PuestoRepository puestos;
-
-    @Autowired
-    private CaracteristicaRepository caracteristicas;
-
-    @Autowired
-    private OferenteRepository oferentes;
-
-    @Autowired
-    private EmpresaRepository empresas;
 
     @GetMapping("/empresas-pendientes")
     public List<Empresa> empresasPendientes() {
@@ -72,6 +62,31 @@ public class Controller {
                     HttpStatus.NOT_FOUND
             );
         }
+    }
+
+    @GetMapping("/caracteristicas")
+    public List<Caracteristica> Caracteristicas(){
+        return service.findCaracteristicas();
+    }
+
+    @GetMapping("/caracteristicas-raiz")
+    public List<Caracteristica> caracteristicasRaiz() {
+        return service.getCaracteristicasRaiz();
+    }
+
+    @PostMapping("/caracteristicas/crear")
+    public void crearCaracteristicas(
+            @RequestParam String nombre,
+            @RequestParam(required = false) String idPadre) {
+
+        Integer padreId = null;
+
+        if (idPadre != null && !idPadre.isEmpty()) {
+            padreId = Integer.parseInt(idPadre);
+        }
+
+        service.crearCaracteristica(nombre, padreId);
+
     }
 
 
