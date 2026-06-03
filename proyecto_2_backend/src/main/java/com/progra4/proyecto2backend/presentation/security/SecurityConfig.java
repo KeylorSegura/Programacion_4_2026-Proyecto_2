@@ -37,8 +37,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/publico/**").permitAll()
                         .requestMatchers("/api/empresa/**").hasAnyAuthority("Empresa")
                         .requestMatchers("/api/oferente/**").hasAnyAuthority("Oferente")
-                        .requestMatchers("/api/admin/**").hasAnyAuthority("Administrador")
-          // .requestMatchers("/**").permitAll() HABILITA FRONTEND
+                        //.requestMatchers("/api/admin/**").hasAnyAuthority("Administrador")
+           .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()))
                 .build();
