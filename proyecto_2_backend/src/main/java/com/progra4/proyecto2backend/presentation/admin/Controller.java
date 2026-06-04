@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController("admin")
 @RequestMapping("/api/admin")
@@ -74,19 +75,20 @@ public class Controller {
         return service.getCaracteristicasRaiz();
     }
 
-    @PostMapping("/caracteristicas/crear")
-    public void crearCaracteristicas(
-            @RequestParam String nombre,
-            @RequestParam(required = false) String idPadre) {
+    @PostMapping("/caracteristicas")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void crearCaracteristica(
+            @RequestBody Map<String, Object> body) {
+
+        String nombre = (String) body.get("nombre");
 
         Integer padreId = null;
 
-        if (idPadre != null && !idPadre.isEmpty()) {
-            padreId = Integer.parseInt(idPadre);
+        if (body.get("padreId") != null) {
+            padreId = ((Number) body.get("padreId")).intValue();
         }
 
         service.crearCaracteristica(nombre, padreId);
-
     }
 
 

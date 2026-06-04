@@ -1,5 +1,6 @@
 package com.progra4.proyecto2backend.logic;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -22,7 +23,8 @@ public class Caracteristica {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "padre", nullable = true)
+    @JoinColumn(name = "padre")
+    @JsonIgnore
     private Caracteristica padre;
 
     @Column(name = "nombre", length = 45)
