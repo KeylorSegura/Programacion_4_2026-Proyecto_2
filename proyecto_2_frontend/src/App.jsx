@@ -13,6 +13,7 @@ import OferentesPendientes from "@/pages/admin/OferentesPendientes.jsx";
 import MisHabilidades from "@/pages/oferente/MisHabilidades.jsx";
 import MiCV from "@/pages/oferente/MiCV.jsx";
 import Login from "@/pages/publico/Login.jsx";
+import CrearCaracteristicas from "@/pages/admin/CrearCaracteristicas.jsx";
 import DashboardOferente from "@/pages/oferente/DashboardOferente.jsx";
 
 import DashboardEmpresa from "@/pages/empresa/DashboardEmpresa.jsx";
@@ -53,6 +54,7 @@ function Header() {
           <Link className="navbar__nav-link" to="/admin/dashboard">DashboardAdmin</Link>
           <Link className="navbar__nav-link" to="/admin/empresas-pendientes">EmpresasPendientes</Link>
           <Link className="navbar__nav-link" to="/admin/oferentes-pendientes">Oferentes Pendientes</Link>
+          <Link className="navbar__nav-link" to="/admin/caracteristicas">Caracteristicas</Link>
 
         </nav>
 
@@ -78,6 +80,7 @@ function Main() {
           <Route exact path="/admin/empresas-pendientes" element={<EmpresasPendientes />}/>
           <Route exact path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
           <Route exact path="/login" element={<Login/>} />
+          <Route exact path="/admin/caracteristicas" element={<CrearCaracteristicas/>} />
 
           <Route exact path="/empresa/dashboard" element={<DashboardEmpresa />} />
           <Route exact path="/empresa/puestos" element={<MisPuestos />} />

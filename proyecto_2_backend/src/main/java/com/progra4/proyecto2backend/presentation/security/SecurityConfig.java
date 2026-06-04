@@ -37,7 +37,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/publico/**").permitAll()
                         .requestMatchers("/api/empresa/**").hasAnyAuthority("SCOPE_Empresa")
                         .requestMatchers("/api/oferente/**").hasAnyAuthority("SCOPE_Oferente")
-                        //.requestMatchers("/api/admin/**").hasAnyAuthority("SCOPE_Administrador")
+                        .requestMatchers("/api/admin/**").hasAnyAuthority("SCOPE_Administrador")
            .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()))

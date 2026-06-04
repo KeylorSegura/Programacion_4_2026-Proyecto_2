@@ -10,10 +10,11 @@ function OferentesPendientes() {
 
 
     function handleList() {
+        const token = localStorage.getItem('token');
 
         const request = new Request(
             backend + '/oferentes-pendientes',
-            { method: 'GET', headers: {} }
+            { method: 'GET', headers: {'Authorization': `Bearer ${token}`} }
         );
 
         (async () => {
@@ -37,13 +38,15 @@ function OferentesPendientes() {
     }, []);
 
     function handleAutorizar(id) {
+        const token = localStorage.getItem('token');
 
         const request = new Request(
             backend + '/autorizarOferente/' + id,
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             }
         );

@@ -8,10 +8,11 @@ function EmpresasPendientes() {
     const backend = "http://localhost:8080/api/admin";
 
     function handleList() {
+        const token = localStorage.getItem('token');
 
         const request = new Request(
             backend + '/empresas-pendientes',
-            { method: 'GET', headers: {} }
+            { method: 'GET', headers: {'Authorization': `Bearer ${token}`} }
         );
 
         (async () => {
@@ -37,13 +38,15 @@ function EmpresasPendientes() {
 
 
     function handleAutorizar(id) {
+        const token = localStorage.getItem('token');
 
         const request = new Request(
             backend + '/autorizarEmpresa/' + id,
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 }
             }
         );
