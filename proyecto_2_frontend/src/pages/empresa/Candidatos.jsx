@@ -1,18 +1,54 @@
-import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import s from './Candidatos.module.css';
-
-const datosCandidatos = [
-    { id: 1, nombre: 'Juan', primerApellido: 'Pérez', requisitosCumplidos: 4, totalRequisitos: 5, porcentajeCoincidencia: 80 },
-    { id: 2, nombre: 'María', primerApellido: 'González', requisitosCumplidos: 3, totalRequisitos: 5, porcentajeCoincidencia: 60 },
-    { id: 3, nombre: 'Carlos', primerApellido: 'Ramírez', requisitosCumplidos: 5, totalRequisitos: 5, porcentajeCoincidencia: 100 },
-];
+import BotonRegresar from '@/components/BotonRegresar.jsx';
 
 function Candidatos() {
+    const [searchParams] = useSearchParams();
+    const puestoId = searchParams.get('id');
+
+    const [puesto, setPuesto] = useState(null);
+    const [candidatos, setCandidatos] = useState([]);
+
+    const backend = "http://localhost:8080/api";
+
+    function handleCandidatos() {
+        const token = localStorage.getItem('token');
+
+        const request = new Request(
+            backend + "/empresa/puestos/" + puestoId + "/candidatos",
+            {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+
+        (async () => {
+            const response = await fetch(request);
+
+            if (!response.ok) {
+                alert("Error: " + response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            setPuesto(data.puesto);
+            setCandidatos(data.candidatos);
+        })();
+    }
+
+    useEffect(() => {
+        handleCandidatos();
+    }, []);
+
     return (
         <div className={s['candidatos']}>
             <h1 className={s['candidatos__title']}>Candidatos para el puesto</h1>
             <h2 className={s['candidatos__puesto']}>
-                Puesto: <span className={s['candidatos__puesto-nombre']}>Desarrollador Java Senior</span>
+                Puesto: <span className={s['candidatos__puesto-nombre']}>{puesto?.descripcion}</span>
             </h2>
 
             <table className={s['candidatos__table']}>
@@ -25,7 +61,7 @@ function Candidatos() {
                     </tr>
                 </thead>
                 <tbody>
-                    {datosCandidatos.map(candidato => (
+                    {candidatos.map(candidato => (
                         <tr className={s['candidatos__row']} key={candidato.id}>
                             <td className={s['candidatos__cell']}>
                                 {candidato.nombre} {candidato.primerApellido}
@@ -48,6 +84,8 @@ function Candidatos() {
                     ))}
                 </tbody>
             </table>
+
+            <BotonRegresar />
         </div>
     );
 }

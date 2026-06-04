@@ -128,32 +128,3 @@
     color: #198754;
     font-weight: 600;
 }
-
-.candidato-detalle__volver {
-    margin-top: 0.5rem;
-    margin-bottom: 1rem;
-}
-
-.candidato-detalle__volver-btn {
-    display: block;
-    width: 100%;
-    background-color: #fff;
-    color: #343a40;
-    border: 1.5px solid #343a40;
-    border-radius: 6px;
-    padding: 0.6rem 1rem;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.candidato-detalle__volver-btn:hover {
-    background-color: #343a40;
-    color: #fff;
-    transform: translateY(-2px);
-}
-
-.candidato-detalle__volver-btn:active {
-    transform: scale(0.96);
-}

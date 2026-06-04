@@ -6,6 +6,26 @@
     padding: 0 1rem;
 }
 
+.puesto-form__back {
+    align-self: flex-start;
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0d6efd;
+    background-color: transparent;
+    border: 1px solid #0d6efd;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.puesto-form__back:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}
+
 .puesto-form__title {
     font-size: 1.8rem;
     font-weight: 700;
@@ -19,6 +39,7 @@
     border-radius: 10px;
     padding: 2rem;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    margin-bottom: 2rem;
 }
 
 .puesto-form__field {

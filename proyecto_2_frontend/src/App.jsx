@@ -78,6 +78,9 @@ function Main() {
           <Route exact path="/empresa/candidatos" element={<Candidatos />} />
           <Route exact path="/empresa/candidatos/detalle" element={<DetalleCandidato />} />
 
+          <Route exact path="/oferente/habilidades" element={<MisHabilidades />} />
+          <Route exact path="/oferente/cv" element={<MiCV />} />
+
         </Routes>
       </main>
   );

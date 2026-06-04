@@ -54,6 +54,7 @@
     width: 100%;
     border-collapse: collapse;
     text-align: center;
+    margin-bottom: 2rem;
 }
 
 .mis-puestos__cell--header {

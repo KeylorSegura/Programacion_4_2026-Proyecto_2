@@ -1,34 +1,103 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import s from './NuevoPuesto.module.css';
 import CaracteristicaTree from '@/components/CaracteristicaTree.jsx';
-
-const caracteristicasEjemplo = [
-    {
-        id: 1,
-        nombre: 'Programación',
-        caracteristicas: [
-            { id: 2, nombre: 'Java', caracteristicas: [] },
-            { id: 3, nombre: 'Python', caracteristicas: [] },
-        ]
-    },
-    {
-        id: 4,
-        nombre: 'Bases de datos',
-        caracteristicas: [
-            { id: 5, nombre: 'SQL', caracteristicas: [] },
-            { id: 6, nombre: 'NoSQL', caracteristicas: [] },
-        ]
-    },
-];
+import BotonRegresar from '@/components/BotonRegresar.jsx';
 
 function NuevoPuesto() {
     const [descripcion, setDescripcion] = useState('');
     const [salario, setSalario] = useState('');
     const [tipoPublicacion, setTipoPublicacion] = useState('Publica');
+    const [caracteristicas, setCaracteristicas] = useState([]);
+
+    const backend = "http://localhost:8080/api";
+
+    function handleCaracteristicas() {
+        const token = localStorage.getItem('token');
+
+        const request = new Request(
+            backend + "/empresa/caracteristicas-raiz",
+            {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+
+        (async () => {
+            const response = await fetch(request);
+
+            if (!response.ok) {
+                alert("Error: " + response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            setCaracteristicas(data);
+        })();
+    }
+
+    useEffect(() => {
+        handleCaracteristicas();
+    }, []);
+
+    function handleCrearPuesto(caracteristicasSeleccionadas) {
+        const token = localStorage.getItem('token');
+
+        const body = {
+            descripcion: descripcion,
+            salario: salario === '' ? null : Number(salario),
+            tipoPublicacion: tipoPublicacion,
+            caracteristicas: caracteristicasSeleccionadas
+        };
+
+        const request = new Request(
+            backend + "/empresa/crear/puesto",
+            {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            }
+        );
+
+        (async () => {
+            const response = await fetch(request);
+
+            if (!response.ok) {
+                alert("Error: " + response.status);
+                return;
+            }
+
+            alert("Puesto creado correctamente");
+
+            setDescripcion('');
+            setSalario('');
+            setTipoPublicacion('Publica');
+        })();
+    }
 
     function handleSubmit(e) {
         e.preventDefault();
-        console.log({ descripcion, salario, tipoPublicacion });
+
+        const form = e.target;
+
+        const caracteristicasSeleccionadas = Array
+            .from(form.querySelectorAll('input[name="caracteristicaIds"]:checked'))
+            .map(checkbox => {
+                const id = Number(checkbox.value);
+                const nivelInput = form.querySelector(`input[name="nivel_${id}"]`);
+
+                return {
+                    caracteristicaId: id,
+                    nivel: Number(nivelInput.value)
+                };
+            });
+
+        handleCrearPuesto(caracteristicasSeleccionadas);
     }
 
     return (
@@ -72,7 +141,7 @@ function NuevoPuesto() {
                     <h3 className={s['puesto-form__caracteristicas-title']}>
                         Características requeridas
                     </h3>
-                    {caracteristicasEjemplo.map(raiz => (
+                    {caracteristicas.map(raiz => (
                         <CaracteristicaTree key={raiz.id} nodo={raiz} />
                     ))}
                 </div>
@@ -81,6 +150,8 @@ function NuevoPuesto() {
                     Guardar Puesto
                 </button>
             </form>
+
+            <BotonRegresar />
         </div>
     );
 }

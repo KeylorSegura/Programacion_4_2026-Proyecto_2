@@ -1,20 +1,71 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import s from './MisPuestos.module.css';
-
-const datosPuestos = [
-    { id: 1, descripcion: 'Desarrollador Java Senior', salario: 1500000, activo: 1 },
-    { id: 2, descripcion: 'Analista de datos', salario: 900000, activo: 1 },
-    { id: 3, descripcion: 'Diseñador UX/UI', salario: 800000, activo: 0 },
-];
+import BotonRegresar from '@/components/BotonRegresar.jsx';
 
 function MisPuestos() {
-    const [puestos, setPuestos] = useState(datosPuestos);
+    const [puestos, setPuestos] = useState([]);
 
-    function handleToggle(id) {
-        setPuestos(puestos.map(p =>
-            p.id === id ? { ...p, activo: p.activo === 1 ? 0 : 1 } : p
-        ));
+    const backend = "http://localhost:8080/api";
+
+    function handlePuestos() {
+        const token = localStorage.getItem('token');
+
+        const request = new Request(
+            backend + "/empresa/puestos",
+            {
+                method: "GET",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+
+        (async () => {
+            const response = await fetch(request);
+
+            if (!response.ok) {
+                alert("Error: " + response.status);
+                return;
+            }
+
+            const data = await response.json();
+
+            setPuestos(data);
+        })();
+    }
+
+    useEffect(() => {
+        handlePuestos();
+    }, []);
+
+    function handleToggle(id, activo) {
+        const token = localStorage.getItem('token');
+
+        const accion = activo === 1 ? "desactivar" : "activar";
+
+        const request = new Request(
+            backend + "/empresa/puestos/" + id + "/" + accion,
+            {
+                method: "POST",
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            }
+        );
+
+        (async () => {
+            const response = await fetch(request);
+
+            if (!response.ok) {
+                alert("Error: " + response.status);
+                return;
+            }
+
+            setPuestos(prev => prev.map(p =>
+                p.id === id ? { ...p, activo: p.activo === 1 ? 0 : 1 } : p
+            ));
+        })();
     }
 
     return (
@@ -51,7 +102,7 @@ function MisPuestos() {
                                 <button
                                     className={`${s['mis-puestos__btn']} ${s['mis-puestos__btn--toggle']}`}
                                     type="button"
-                                    onClick={() => handleToggle(puesto.id)}
+                                    onClick={() => handleToggle(puesto.id, puesto.activo)}
                                 >
                                     {puesto.activo === 1 ? 'Desactivar' : 'Activar'}
                                 </button>
@@ -66,6 +117,8 @@ function MisPuestos() {
                     ))}
                 </tbody>
             </table>
+
+            <BotonRegresar />
         </div>
     );
 }
