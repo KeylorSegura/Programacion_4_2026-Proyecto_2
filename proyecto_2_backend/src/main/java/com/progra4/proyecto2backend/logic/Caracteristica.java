@@ -25,7 +25,6 @@ public class Caracteristica {
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "padre")
-    @JsonIgnore
     private Caracteristica padre;
 
     @Column(name = "nombre", length = 45)
