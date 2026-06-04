@@ -1,23 +1,22 @@
 package com.progra4.proyecto2backend.logic;
 
-import com.progra4.proyecto2backend.data.CaracteristicaRepository;
-import com.progra4.proyecto2backend.data.EmpresaRepository;
-import com.progra4.proyecto2backend.data.OferenteRepository;
-import com.progra4.proyecto2backend.data.PuestoRepository;
-import com.progra4.proyecto2backend.data.PuestocaracteristicaRepository;
+import com.progra4.proyecto2backend.data.*;
+import com.progra4.proyecto2backend.presentation.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import com.progra4.proyecto2backend.presentation.security.TokenService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import lombok.AllArgsConstructor;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+
+@AllArgsConstructor
 @org.springframework.stereotype.Service
 public class Service {
 
@@ -25,7 +24,13 @@ public class Service {
     private PuestoRepository puestos;
 
     @Autowired
+    private UsuarioRepository usuarios;
+
+    @Autowired
     private PuestocaracteristicaRepository puestocaracteristicas;
+
+    @Autowired
+    private OferentecaracteristicaRepository oferenteCaracteristicas;
 
     @Autowired
     private CaracteristicaRepository caracteristicas;
@@ -35,6 +40,10 @@ public class Service {
 
     @Autowired
     private EmpresaRepository empresas;
+
+
+    private final TokenService tokenService;
+
 
     public List<Empresa> empresasPendientes() {
         return empresas.findByEstado((byte) 0);
@@ -273,5 +282,276 @@ public class Service {
         detalle.put("oferentecaracteristicas", habilidades);
 
         return detalle;
+    }
+
+
+
+
+
+
+
+
+    public String construirRutaCaracteristica(Caracteristica c) {
+        if (c.getPadre() == null) {
+            return c.getNombre();
+        }
+        return construirRutaCaracteristica(c.getPadre())
+                + " / "
+                + c.getNombre();
+    }
+
+    public List<Map<String, Object>> readHabilidades(String usuarioId) {
+
+        Oferente oferente = oferentes.findByNombreUsuarioId(usuarioId);
+
+        if (oferente == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+
+        return oferente.getOferentecaracteristicas()
+                .stream()
+                .sorted((oc1, oc2) -> construirRutaCaracteristica(oc1.getCaracteristica()).compareTo(construirRutaCaracteristica(oc2.getCaracteristica())))
+                .map(oc -> Map.<String, Object>of("ruta", construirRutaCaracteristica(oc.getCaracteristica()), "nivel", oc.getNivel()))
+                .toList();
+    }
+
+    public List<Map<String, Object>> readSubcategorias(Integer padreId) {
+
+        return caracteristicas.findByPadreId(padreId)
+                .stream()
+                .map(c -> Map.<String, Object>of("id", c.getId(), "nombre", c.getNombre()))
+                .toList();
+    }
+
+    public List<Map<String, Object>> readRuta(Integer padreId) {
+        List<Caracteristica> lista;
+
+        if (padreId == 0) {
+            lista = caracteristicas.findByPadreIsNull();
+        } else {
+            lista = caracteristicas.findByPadreId(padreId);
+        }
+
+        return lista.stream()
+                .map(c -> Map.<String, Object>of("id", c.getId(), "nombre", c.getNombre()))
+                .toList();
+    }
+
+    public void agregarHabilidad(String usuarioId, Integer caracteristicaId, Integer nivel) {
+        Oferente oferente = oferentes.findByNombreUsuarioId(usuarioId);
+
+        Caracteristica caracteristica = caracteristicas.findById(caracteristicaId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        Oferentecaracteristica existente = oferenteCaracteristicas.findByOferenteAndCaracteristica(oferente, caracteristica);
+
+        if (existente != null) {
+            existente.setNivel(nivel);
+            oferenteCaracteristicas.save(existente);
+        } else {
+            Oferentecaracteristica nueva = new Oferentecaracteristica();
+            nueva.setOferente(oferente);
+            nueva.setCaracteristica(caracteristica);
+            nueva.setNivel(nivel);
+            oferenteCaracteristicas.save(nueva);
+        }
+    }
+
+    public boolean existeCV(String usuarioId) {
+        Oferente oferente = oferentes.findByNombreUsuarioId(usuarioId);
+        byte[] cv = oferente.getCurriculum();
+        return cv != null && cv.length > 0;
+    }
+
+    public void subirCV(String usuarioId, MultipartFile archivo) {
+        try {
+            Oferente oferente = oferentes.findByNombreUsuarioId(usuarioId);
+            oferente.setCurriculum(archivo.getBytes());
+            oferentes.save(oferente);
+        } catch (Exception e) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
+    }
+
+    public byte[] obtenerCV(String usuarioId) {
+        Oferente oferente = oferentes.findByNombreUsuarioId(usuarioId);
+        byte[] pdf = oferente.getCurriculum();
+        if (pdf == null || pdf.length == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return pdf;
+    }
+
+
+
+    public String login(Usuario usuario) {
+        try {
+            Usuario ubd = usuarios.findById(usuario.getId()).get();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            if (!encoder.matches(usuario.getClave(), ubd.getClave())) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+            return tokenService.generateToken(ubd);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    public void createOferente(Oferente oferente) {
+        String nombreUsuario = oferente.getNombreUsuario().getId();
+        String clave = oferente.getNombreUsuario().getClave();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String claveEncriptada = encoder.encode(clave);
+        if (usuarios.existsById(nombreUsuario)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "El nombre de usuario ya existe"
+            );
+        }
+        Usuario usuario = new Usuario(nombreUsuario, claveEncriptada, "Oferente");
+        usuarios.save(usuario);
+        oferente.setNombreUsuario(usuario);
+        oferente.setEstado((byte) 0);
+        oferentes.save(oferente);
+    }
+
+    public void createEmpresa(Empresa empresa) {
+        String nombreUsuario = empresa.getNombreUsuario().getId();
+        String clave = empresa.getNombreUsuario().getClave();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        String claveEncriptada = encoder.encode(clave);
+        if (usuarios.existsById(nombreUsuario)) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "El nombre de usuario ya existe"
+            );
+        }
+        Usuario usuario = new Usuario(nombreUsuario, claveEncriptada, "Empresa");
+        usuarios.save(usuario);
+        empresa.setNombreUsuario(usuario);
+        empresa.setEstado((byte) 0);
+        empresas.save(empresa);
+    }
+
+    public List<Map<String, Object>> ultimos5Puestos() {
+
+        return puestos.findAll().stream().filter(p -> "Publica".equalsIgnoreCase(p.getTipoPublicacion()) && p.getActivo() == 1)
+                .sorted((p1, p2) -> Integer.compare(p2.getId(), p1.getId()))
+                .limit(5)
+                .map(this::convertirPuesto)
+                .toList();
+    }
+
+    public List<Map<String, Object>> getCaracteristicaRaiz() {
+        try {
+            return caracteristicas.findRoots().stream()
+                    .sorted(Comparator.comparing(Caracteristica::getNombre))
+                    .map(this::convertirCaracteristica)
+                    .toList();
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND
+            );
+        }
+    }
+
+    public List<Map<String, Object>> buscarPorCaracteristicas(List<Integer> caracteristicaIds) {
+        try {
+            List<Set<Integer>> grupos = caracteristicaIds.stream()
+                    .map(this::obtenerIdsConDescendientes)
+                    .toList();
+
+            return puestos.findAll().stream()
+                    .filter(p -> "Publica".equalsIgnoreCase(p.getTipoPublicacion()) && p.getActivo() == 1)
+                    .filter(puesto -> {
+                        if (grupos.isEmpty()) {
+                            return true;
+                        }
+                        Set<Integer> idsDelPuesto = puesto.getPuestocaracteristicas().stream().map(pc -> pc.getCaracteristica().getId()).collect(Collectors.toSet());
+                        return grupos.stream().allMatch(grupo -> grupo.stream().anyMatch(idsDelPuesto::contains));
+                    })
+                    .sorted((p1, p2) -> Integer.compare(p2.getId(), p1.getId()))
+                    .map(this::convertirPuesto)
+                    .toList();
+        } catch (Exception e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+
+    private Map<String, Object> convertirCaracteristica(Caracteristica c) {
+
+        Map<String, Object> map =new HashMap<>();
+        map.put("id", c.getId());
+        map.put("nombre", c.getNombre());
+        List<Map<String, Object>> hijos =
+                c.getCaracteristicas().stream()
+                        .sorted(Comparator.comparing(Caracteristica::getNombre))
+                        .map(this::convertirCaracteristica)
+                        .toList();
+
+        map.put("caracteristicas", hijos);
+
+        return map;
+    }
+
+    private Map<String, Object> convertirPuesto(Puesto p) {
+
+        Map<String, Object> puestoMap =new HashMap<>();
+        puestoMap.put("id", p.getId());
+        puestoMap.put("descripcion", p.getDescripcion());
+        puestoMap.put("salario", p.getSalario());
+        Map<String, Object> empresaMap = new HashMap<>();
+
+        if (p.getEmpresa() != null) {
+            empresaMap.put( "nombre", p.getEmpresa().getNombre());
+        } else {
+            empresaMap.put( "nombre", "No disponible");
+        }
+        puestoMap.put("empresa", empresaMap);
+        List<Map<String, Object>> pcs =
+                p.getPuestocaracteristicas().stream()
+                        .map(this::convertirPuestoCaracteristica)
+                        .toList();
+        puestoMap.put("puestocaracteristicas", pcs );
+
+        return puestoMap;
+    }
+
+    private Map<String, Object> convertirPuestoCaracteristica(Puestocaracteristica pc) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("nivel",pc.getNivel());
+        Map<String, Object> caracteristicaMap = new HashMap<>();
+        caracteristicaMap.put("id", pc.getCaracteristica().getId());
+        caracteristicaMap.put("rutaCompleta", pc.getCaracteristica().getRutaCompleta());
+        map.put("caracteristica", caracteristicaMap);
+
+        return map;
+    }
+
+    private Set<Integer> obtenerIdsConDescendientes(Integer id) {
+        Set<Integer> resultado = new HashSet<>();
+        Queue<Caracteristica> cola =  new LinkedList<>();
+        Caracteristica raiz =  caracteristicas.findById(id).orElse(null);
+        if (raiz == null) {
+            return resultado;
+        }
+        cola.add(raiz);
+
+        while (!cola.isEmpty()) {
+            Caracteristica actual = cola.poll();
+
+            resultado.add(actual.getId());
+
+            for (Caracteristica hijo : actual.getCaracteristicas()) {
+                cola.add(hijo);
+            }
+        }
+
+        return resultado;
     }
 }
