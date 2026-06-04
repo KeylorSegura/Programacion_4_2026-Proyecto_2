@@ -1,11 +1,12 @@
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import s from './BotonRegresar.module.css';
 
-function BotonRegresar({ to }) {
+function BotonRegresar() {
+    const navigate = useNavigate();
     return (
-        <Link className={s['boton-regresar']} to={to}>
+        <button className={s['boton-regresar']} type="button" onClick={() => navigate(-1)}>
             Regresar
-        </Link>
+        </button>
     );
 }
 
