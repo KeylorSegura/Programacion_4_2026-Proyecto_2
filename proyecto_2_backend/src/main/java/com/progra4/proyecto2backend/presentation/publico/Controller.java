@@ -20,25 +20,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class Controller {
 
-    @Autowired
-    private PuestoRepository puestos;
-
-    @Autowired
-    private CaracteristicaRepository caracteristicas;
-
-    @Autowired
-    private EmpresaRepository empresas;
-
-    @Autowired
-    private OferenteRepository oferentes;
-
-    @Autowired
-    private UsuarioRepository usuarios;
 
     @Autowired
     private Service service;
 
-    private final TokenService tokenService;
+
 
     @PostMapping("/login")
     public String login(@RequestBody Usuario usuario) {
