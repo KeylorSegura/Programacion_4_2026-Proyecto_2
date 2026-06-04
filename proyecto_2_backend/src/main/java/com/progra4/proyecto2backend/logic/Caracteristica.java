@@ -22,6 +22,7 @@ public class Caracteristica {
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "padre")
     @JsonIgnore
@@ -33,7 +34,6 @@ public class Caracteristica {
     @OneToMany(mappedBy = "padre")
     @OrderBy("nombre ASC")
     private Set<Caracteristica> caracteristicas = new LinkedHashSet<>();
-
 
     private boolean abierto;
 

@@ -1,0 +1,19 @@
+.boton-regresar {
+    align-self: flex-start;
+    text-decoration: none;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0d6efd;
+    background-color: transparent;
+    border: 1px solid #0d6efd;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.boton-regresar:hover {
+    background-color: #0d6efd;
+    color: #fff;
+}

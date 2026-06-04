@@ -35,9 +35,9 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers("/api/publico/**").permitAll()
-                        .requestMatchers("/api/empresa/**").hasAnyAuthority("Empresa")
-                        .requestMatchers("/api/oferente/**").hasAnyAuthority("Oferente")
-                        //.requestMatchers("/api/admin/**").hasAnyAuthority("Administrador")
+                        .requestMatchers("/api/empresa/**").hasAnyAuthority("SCOPE_Empresa")
+                        .requestMatchers("/api/oferente/**").hasAnyAuthority("SCOPE_Oferente")
+                        //.requestMatchers("/api/admin/**").hasAnyAuthority("SCOPE_Administrador")
            .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2ResourceServer(configurer -> configurer.jwt(Customizer.withDefaults()))

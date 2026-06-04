@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { AppContext } from "../../AppProvider";
 import s from "./MiCV.module.css";
 
@@ -11,16 +11,18 @@ function MiCV() {
 
     const backend = "http://localhost:8080/api";
 
-    const usuarioId = "key";
+    const archivo = useRef();
+
+
 
 
     function handleTieneCV() {
 
         const request = new Request(
-            backend + "/oferente/cv/existe/" + usuarioId,
+            backend + "/oferente/cv/existe/" + JSON.parse(atob(localStorage.getItem("token").split('.')[1])).id,
             {
                 method: "GET",
-                headers: {}
+                headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
             }
         );
 
@@ -48,55 +50,69 @@ function MiCV() {
         handleTieneCV();
 
     }, []);
-    function handleFileChange(event) {
-
-        const archivo = event.target.files[0];
-
-        setCvState({
-            ...cvState,
-            archivo: archivo
-        });
-    }
 
     function handleSubir(event) {
 
         event.preventDefault();
 
-        if (cvState.archivo == null) {
+        if (archivo.current.files.length === 0) {
             alert("Debe seleccionar un archivo");
             return;
         }
 
         const formData = new FormData();
 
-        formData.append("archivo", cvState.archivo);
+        formData.append("archivo", archivo.current.files[0]);
 
         const request = new Request(
-            backend + "/oferente/cv/subir/" + usuarioId,
+            backend + "/oferente/cv/subir/" + JSON.parse(atob(localStorage.getItem("token").split('.')[1])).id,
             {
                 method: "POST",
+                headers: {'Authorization': 'Bearer '+localStorage.getItem('token')},
                 body: formData
             }
         );
 
         (async () => {
             const response = await fetch(request);
+
             if (!response.ok) {
                 alert("Error: " + response.status);
                 return;
             }
+
             alert("CV subido correctamente");
 
             setCvState({
-                archivo: null,
+                ...cvState,
                 tieneCV: true
             });
 
         })();
     }
 
-    function handleVerCV() {
-        window.open(backend + "/oferente/cv/ver/" + usuarioId, "_blank");
+    async function handleVerCV() {
+
+        const response = await fetch(
+            backend + "/oferente/cv/ver/" +
+            JSON.parse(atob(localStorage.getItem("token").split('.')[1])).id,
+            {
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            }
+        );
+
+        if (!response.ok) {
+            alert("Error: " + response.status);
+            return;
+        }
+
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+
+        window.open(url, "_blank");
     }
 
     return (
@@ -104,15 +120,16 @@ function MiCV() {
 
             <h1 className={s.page__title}> Mi CV</h1>
 
-            <form className={s["cv-form"]}onSubmit={handleSubir}>
+            <form className={s["cv-form"]} onSubmit={handleSubir}>
                 <div className={s["cv-form__field"]}>
                     <label className={s["cv-form__label"]}>Archivo PDF</label>
-                    <input className={s["cv-form__file"]} type="file" accept="application/pdf" onChange={handleFileChange}/>
+                    <input
+                        className={s["cv-form__file"]}
+                        type="file"
+                        accept="application/pdf"
+                        ref={archivo}
+                    />
                 </div>
-                {
-                    cvState.archivo != null &&
-                    <p>Archivo seleccionado:{" "}{cvState.archivo.name}</p>
-                }
 
                 <div className={s["cv-form__actions"]}>
                     <button className={s["cv-form__button"] + " " + s["cv-form__button--submit"]} type="submit">Subir</button>

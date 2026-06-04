@@ -11,7 +11,6 @@ function MisHabilidades() {
 
     const backend = "http://localhost:8080/api";
 
-    const usuarioId = "key";
 
     useEffect(() => {
 
@@ -24,32 +23,18 @@ function MisHabilidades() {
     function handleLoadInicial() {
 
         const request = new Request(
-            backend + "/oferente/habilidades/" + usuarioId,
-            {
-                method: "GET",
-                headers: {}
-            }
+            backend + "/oferente/habilidades/" + JSON.parse(atob(localStorage.getItem("token").split('.')[1])).id, {method: "GET", headers: {'Authorization': 'Bearer '+localStorage.getItem('token') }}
         );
 
         (async () => {
-
             const response = await fetch(request);
-
             if (!response.ok) {
+                console.log(await response.text());
                 alert("Error: " + response.status);
                 return;
             }
-
             const habilidades = await response.json();
-
-            const requestRaices = new Request(
-                backend + "/oferente/habilidades/ruta/0",
-                {
-                    method: "GET",
-                    headers: {}
-                }
-            );
-
+            const requestRaices = new Request(backend + "/oferente/habilidades/ruta/0", {method: "GET", headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}});
             const responseRaices = await fetch(requestRaices);
 
             if (!responseRaices.ok) {
@@ -71,29 +56,17 @@ function MisHabilidades() {
 
     function handleEntrar(caracteristica) {
 
-        const request = new Request(
-            backend + "/oferente/habilidades/subcategorias/" + caracteristica.id,
-            {
-                method: "GET",
-                headers: {}
-            }
-        );
+        const request = new Request(backend + "/oferente/habilidades/subcategorias/" + caracteristica.id, {method: "GET", headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}});
 
         (async () => {
-
             const response = await fetch(request);
-
             if (!response.ok) {
                 alert("Error: " + response.status);
                 return;
             }
-
             const data = await response.json();
-
             let rutaNueva = [...habilidadesState.ruta];
-
             rutaNueva.push(caracteristica);
-
             setHabilidadesState({
                 ...habilidadesState,
                 caracteristicasActuales: data,
@@ -108,32 +81,25 @@ function MisHabilidades() {
     }
 
     function handleVolver(index) {
-
         let padreId = 0;
-
         if (index > 0) {
             padreId = habilidadesState.ruta[index - 1].id;
         }
-
         const request = new Request(
             backend + "/oferente/habilidades/ruta/" + padreId,
             {
                 method: "GET",
-                headers: {}
+                headers: {'Authorization': 'Bearer '+localStorage.getItem('token')}
             }
         );
 
         (async () => {
-
             const response = await fetch(request);
-
             if (!response.ok) {
                 alert("Error: " + response.status);
                 return;
             }
-
             const data = await response.json();
-
             let nuevaRuta =
                 habilidadesState.ruta.slice(0, index);
 
@@ -171,11 +137,12 @@ function MisHabilidades() {
         event.preventDefault();
 
         const request = new Request(
-            backend + "/oferente/habilidades/agregar/" + usuarioId,
+            backend + "/oferente/habilidades/agregar/" + JSON.parse(atob(localStorage.getItem("token").split('.')[1])).id,
             {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "Authorization": "Bearer " + localStorage.getItem("token")
                 },
                 body: JSON.stringify(
                     habilidadesState.habilidad
@@ -267,8 +234,7 @@ function ListaHabilidades({ list }) {
     );
 }
 
-function MapaHabilidades({ruta, caracteristicasActuales, handleEntrar, handleVolver
-                         }) {
+function MapaHabilidades({ruta, caracteristicasActuales, handleEntrar, handleVolver}) {
     return (
         <div className={s.habilidades__panel + " " + s["habilidades__panel--ruta"]}>
             <h2 className={s.habilidades__subtitle}>Ruta</h2>

@@ -1,5 +1,6 @@
 import { useContext, useEffect } from "react";
 import { AppContext } from "@/AppProvider";
+import s from './BuscarPuestos.module.css';
 
 function BuscarPuestos() {
 
@@ -94,49 +95,62 @@ function BuscarPuestos() {
     }
 
     return (
-        <div>
+        <div className={s.main__container}>
 
-            <h1>Búsqueda de puestos</h1>
+            <h1 className={s.page__title}>Búsqueda de puestos</h1>
 
-            <h3>Filtros</h3>
+            <div className={s.habilidades__grid}>
 
-            {
-                busquedaPuestosState
-                    .caracteristicasRaiz
-                    .map(raiz => (
+                <div className={s.container__left}>
 
-                        <CaracteristicaNodo
-                            key={raiz.id}
-                            nodo={raiz}
-                            seleccionadas={
-                                busquedaPuestosState
-                                    .caracteristicasSeleccionadas
-                            }
-                            handleCheckbox={handleCheckbox}
-                        />
 
-                    ))
-            }
+                    <h3 className={s.page__subtitle}>Filtros</h3>
 
-            <button onClick={handleFiltrar}>Filtrar</button>
+                    <div className={s.filtrador}>
 
-            <h3>Resultados</h3>
+                        {busquedaPuestosState
+                                .caracteristicasRaiz
+                                .map(raiz => (
+                                    <CaracteristicaNodo key={raiz.id} nodo={raiz} seleccionadas={busquedaPuestosState.caracteristicasSeleccionadas} handleCheckbox={handleCheckbox}/>
+                                ))}
 
-            {
-                busquedaPuestosState.puestos.map(puesto => (
+                        <button className={`${s.filtrador__button} ${s['filtrador__button--filtrar']}`} onClick={handleFiltrar}>Filtrar</button>
+                    </div>
 
-                    <div key={puesto.id}>
+                </div>
 
-                        <p><strong>Empresa:</strong>{puesto.empresa.nombre}</p>
+                <div className={s.container__right}>
 
-                        <p><strong>Descripción:</strong>{puesto.descripcion}</p>
+                    <h3 className={s.page__subtitle} >Resultados</h3>
 
-                        <p><strong>Salario:</strong>₡ {puesto.salario}</p>
+                    <div className={s.resultados}>
+                        {busquedaPuestosState.puestos.length === 0 ? (
+                            <div className={s.resultados__empty}>
+                                <p>No hay resultados</p>
+                            </div>
+                        ) : (
+                            <div className={s.resultados__list}>
+                                {busquedaPuestosState.puestos.map(puesto => (
+                                    <div key={puesto.id} className={s.puesto}>
+                                        <p className={s.puesto__empresa}><strong>Empresa:</strong>{" "}{puesto.empresa.nombre}</p>
+
+                                        <p className={s.puesto__descripcion}><strong>Descripción:</strong>{" "}{puesto.descripcion}</p>
+
+                                        <p className={s.puesto__salario}><strong>Salario:</strong> ₡ {puesto.salario}</p>
+                                    </div>
+
+                                ))}
+
+                            </div>
+
+                        )}
 
                     </div>
 
-                ))
-            }
+
+                </div>
+
+            </div>
 
         </div>
     );
@@ -144,25 +158,20 @@ function BuscarPuestos() {
 
 function CaracteristicaNodo({nodo, seleccionadas, handleCheckbox}) {
     return (
-        <div>
-            <details>
-                <summary>
-                    <input type="checkbox" checked={seleccionadas.includes(nodo.id)} onChange={(e) => handleCheckbox(nodo.id, e.target.checked)}/>
+        <div className={s['caracteristica-nodo']}>
+            <details className={s['caracteristica-nodo__detalle']}>
+                <summary className={s['caracteristica-nodo__resumen']}>
+                    <input className={s['caracteristica-nodo__checkbox']} type="checkbox" checked={seleccionadas.includes(nodo.id)} onChange={(e) => handleCheckbox(nodo.id, e.target.checked)}/>
                     {nodo.nombre}
                 </summary>
 
-                {
-                    nodo.caracteristicas &&
-                    nodo.caracteristicas.map(hijo => (
-                        <CaracteristicaNodo
-                            key={hijo.id}
-                            nodo={hijo}
-                            seleccionadas={seleccionadas}
-                            handleCheckbox={handleCheckbox}
-                        />
+                {nodo.caracteristicas?.length > 0 && (
+                    <div className={s['caracteristica-nodo__hijos']}>
 
-                    ))
+                {nodo.caracteristicas && nodo.caracteristicas.map(hijo => (<CaracteristicaNodo key={hijo.id} nodo={hijo} seleccionadas={seleccionadas} handleCheckbox={handleCheckbox}/>))
                 }
+                    </div>
+                )}
 
             </details>
 

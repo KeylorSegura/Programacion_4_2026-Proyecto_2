@@ -14,6 +14,13 @@ import MisHabilidades from "@/pages/oferente/MisHabilidades.jsx";
 import MiCV from "@/pages/oferente/MiCV.jsx";
 import Login from "@/pages/publico/Login.jsx";
 import CrearCaracteristicas from "@/pages/admin/CrearCaracteristicas.jsx";
+import DashboardOferente from "@/pages/oferente/DashboardOferente.jsx";
+
+import DashboardEmpresa from "@/pages/empresa/DashboardEmpresa.jsx";
+import MisPuestos from "@/pages/empresa/MisPuestos.jsx";
+import NuevoPuesto from "@/pages/empresa/NuevoPuesto.jsx";
+import Candidatos from "@/pages/empresa/Candidatos.jsx";
+import DetalleCandidato from "@/pages/empresa/DetalleCandidato.jsx";
 
 function App() {
   return (
@@ -41,6 +48,9 @@ function Header() {
           <Link className="navbar__nav-link" to="/empresa/registrar">Registro Empresa</Link>
           <Link className="navbar__nav-link" to="/oferente/registrar">Registro Oferente</Link>
           <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>
+          <Link className="navbar__nav-link" to="/oferente/dashboard">Dashboard</Link>
+          <Link className="navbar__nav-link" to="/oferente/habilidades">Mis Habilidades</Link>
+          <Link className="navbar__nav-link" to="/oferente/cv">Mi CV</Link>
           <Link className="navbar__nav-link" to="/admin/dashboard">DashboardAdmin</Link>
           <Link className="navbar__nav-link" to="/admin/empresas-pendientes">EmpresasPendientes</Link>
           <Link className="navbar__nav-link" to="/admin/oferentes-pendientes">Oferentes Pendientes</Link>
@@ -63,11 +73,24 @@ function Main() {
           <Route exact path="/puestos" element={<BuscarPuestos />} />
           <Route exact path="/empresa/registrar" element={<RegistrarEmpresa />} />
           <Route exact path="/oferente/registrar" element={<RegistrarOferente />} />
+          <Route exact path="/oferente/dashboard" element={<DashboardOferente/>}/>
+          <Route exact path="/oferente/habilidades" element={<MisHabilidades/>}/>
+          <Route exact path="/oferente/cv" element={<MiCV/>}/>
           <Route exact path="/admin/dashboard" element={<DashboardAdmin />}/>
           <Route exact path="/admin/empresas-pendientes" element={<EmpresasPendientes />}/>
           <Route exact path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
           <Route exact path="/login" element={<Login/>} />
           <Route exact path="/admin/caracteristicas" element={<CrearCaracteristicas/>} />
+
+          <Route exact path="/empresa/dashboard" element={<DashboardEmpresa />} />
+          <Route exact path="/empresa/puestos" element={<MisPuestos />} />
+          <Route exact path="/empresa/puestos/nuevo" element={<NuevoPuesto />} />
+          <Route exact path="/empresa/candidatos" element={<Candidatos />} />
+          <Route exact path="/empresa/candidatos/detalle" element={<DetalleCandidato />} />
+
+          <Route exact path="/oferente/habilidades" element={<MisHabilidades />} />
+          <Route exact path="/oferente/cv" element={<MiCV />} />
+
         </Routes>
       </main>
   );
