@@ -14,14 +14,27 @@ function Caracteristicas() {
 
     function handleList() {
 
+
         (async () => {
 
             const responseRaices = await fetch(
-                backend + '/caracteristicas-raiz'
+                backend + '/caracteristicas-raiz',
+                {
+                    headers: {
+                        'Authorization':
+                            'Bearer ' + localStorage.getItem('token')
+                    }
+                }
             );
 
             const responseCaracteristicas = await fetch(
-                backend + '/caracteristicas'
+                backend + '/caracteristicas',
+                {
+                    headers: {
+                        'Authorization':
+                            'Bearer ' + localStorage.getItem('token')
+                    }
+                }
             );
 
             if (!responseRaices.ok || !responseCaracteristicas.ok) {
@@ -48,13 +61,16 @@ function Caracteristicas() {
             {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization':
+                        'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify({
                     nombre,
-                    padreId: idPadre === ''
-                        ? null
-                        : Number(idPadre)
+                    padreId:
+                        idPadre === ''
+                            ? null
+                            : Number(idPadre)
                 })
             }
         );
