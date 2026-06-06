@@ -81,15 +81,18 @@ function Header() {
                 {!user && <Link className="navbar__nav-link" to="/oferente/registrar">Registro Oferente</Link>}
                 {!user && <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>}
 
+
                 {user?.tipo === 'Administrador' && <Link className="navbar__nav-link" to="/admin/dashboard">Dashboard</Link>}
                 {user?.tipo === 'Administrador' && <Link className="navbar__nav-link" to="/admin/empresas-pendientes">Empresas Pendientes</Link>}
                 {user?.tipo === 'Administrador' && <Link className="navbar__nav-link" to="/admin/oferentes-pendientes">Oferentes Pendientes</Link>}
 
                 {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/dashboard">Dashboard</Link>}
-                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Puestos</Link>}
+                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Mis Puestos</Link>}
+                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Nuevo Puesto</Link>}
 
                 {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/dashboard">Dashboard</Link>}
                 {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/habilidades">Habilidades</Link>}
+                {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/cv">Mi CV</Link>}
 
             </nav>
 
