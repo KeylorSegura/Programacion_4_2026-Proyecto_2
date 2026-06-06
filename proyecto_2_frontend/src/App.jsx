@@ -1,7 +1,9 @@
+import { useState, useEffect } from 'react';
+import { RiLogoutBoxLine } from 'react-icons/ri';
 import logo from './assets/logo.png';
 import './App.css';
 import Principal from "./pages/publico/Principal.jsx";
-import { Link, BrowserRouter, Routes, Route } from "react-router-dom";
+import { Link, BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import BuscarPuestos from "./pages/publico/BuscarPuestos.jsx";
 import { AppProvider } from "@/AppProvider.jsx";
 import RegistrarOferente from "@/pages/publico/RegistrarOferente.jsx";
@@ -22,6 +24,23 @@ import NuevoPuesto from "@/pages/empresa/NuevoPuesto.jsx";
 import Candidatos from "@/pages/empresa/Candidatos.jsx";
 import DetalleCandidato from "@/pages/empresa/DetalleCandidato.jsx";
 
+function getUser(token) {
+    try {
+        const parts = token.split('.');
+        if (parts.length !== 3) return null;
+        const payload = JSON.parse(atob(parts[1]));
+        const tipo = Array.isArray(payload.scope) ? payload.scope[0] : payload.scope;
+        return { id: payload.id, tipo };
+    } catch {
+        return null;
+    }
+}
+
+function initUser() {
+    const token = localStorage.getItem('token');
+    return token ? getUser(token) : null;
+}
+
 function App() {
   return (
       <AppProvider>
@@ -35,34 +54,57 @@ function App() {
 }
 
 function Header() {
-  return (
-      <header className="navbar">
-        <div className="navbar__brand">
-          <Link to="/" className="navbar__brand-link">
-            <img src={logo} className="navbar__logo" alt="logo" />
-            <span className="navbar__title">BolsaEmpleo</span>
-          </Link>
-        </div>
+    const [user, setUser] = useState(initUser());
+    const location = useLocation();
+    const navigate = useNavigate();
 
-        <nav className="navbar__nav">
-          <Link className="navbar__nav-link" to="/empresa/registrar">Registro Empresa</Link>
-          <Link className="navbar__nav-link" to="/oferente/registrar">Registro Oferente</Link>
-          <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>
-          <Link className="navbar__nav-link" to="/oferente/dashboard">Dashboard</Link>
-          <Link className="navbar__nav-link" to="/oferente/habilidades">Mis Habilidades</Link>
-          <Link className="navbar__nav-link" to="/oferente/cv">Mi CV</Link>
-          <Link className="navbar__nav-link" to="/admin/dashboard">DashboardAdmin</Link>
-          <Link className="navbar__nav-link" to="/admin/empresas-pendientes">EmpresasPendientes</Link>
-          <Link className="navbar__nav-link" to="/admin/oferentes-pendientes">Oferentes Pendientes</Link>
-          <Link className="navbar__nav-link" to="/admin/caracteristicas">Caracteristicas</Link>
+    useEffect(() => {
+        setUser(initUser());
+    }, [location]);
 
-        </nav>
+    function handleLogout() {
+        localStorage.removeItem('token');
+        setUser(null);
+        navigate('/');
+    }
 
-        <div className="navbar__login">
-          <Link className="navbar__login-link" to="/login">Login</Link>
-        </div>
-      </header>
-  );
+    return (
+        <header className="navbar">
+            <div className="navbar__brand">
+                <Link to="/" className="navbar__brand-link">
+                    <img src={logo} className="navbar__logo" alt="logo" />
+                    <span className="navbar__title">BolsaEmpleo</span>
+                </Link>
+            </div>
+
+            <nav className="navbar__nav">
+                {!user && <Link className="navbar__nav-link" to="/empresa/registrar">Registro Empresa</Link>}
+                {!user && <Link className="navbar__nav-link" to="/oferente/registrar">Registro Oferente</Link>}
+                {!user && <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>}
+
+
+                {user?.tipo === 'Administrador' && <Link className="navbar__nav-link" to="/admin/dashboard">Dashboard</Link>}
+                {user?.tipo === 'Administrador' && <Link className="navbar__nav-link" to="/admin/empresas-pendientes">Empresas Pendientes</Link>}
+                {user?.tipo === 'Administrador' && <Link className="navbar__nav-link" to="/admin/oferentes-pendientes">Oferentes Pendientes</Link>}
+
+                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/dashboard">Dashboard</Link>}
+                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Mis Puestos</Link>}
+                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Nuevo Puesto</Link>}
+
+                {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/dashboard">Dashboard</Link>}
+                {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/habilidades">Habilidades</Link>}
+                {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/cv">Mi CV</Link>}
+
+            </nav>
+
+            <div className="navbar__login">
+                {!user
+                    ? <Link className="navbar__login-link" to="/login">Login</Link>
+                    : <Link className="navbar__login-link" to="/" onClick={handleLogout}><RiLogoutBoxLine /> {user.id} ({user.tipo})</Link>
+                }
+            </div>
+        </header>
+    );
 }
 
 function Main() {
@@ -73,14 +115,11 @@ function Main() {
           <Route exact path="/puestos" element={<BuscarPuestos />} />
           <Route exact path="/empresa/registrar" element={<RegistrarEmpresa />} />
           <Route exact path="/oferente/registrar" element={<RegistrarOferente />} />
-          <Route exact path="/oferente/dashboard" element={<DashboardOferente/>}/>
-          <Route exact path="/oferente/habilidades" element={<MisHabilidades/>}/>
-          <Route exact path="/oferente/cv" element={<MiCV/>}/>
           <Route exact path="/admin/dashboard" element={<DashboardAdmin />}/>
           <Route exact path="/admin/empresas-pendientes" element={<EmpresasPendientes />}/>
           <Route exact path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
+          <Route exact path="/admin/caracteristicas" element={<CrearCaracteristicas />} />
           <Route exact path="/login" element={<Login/>} />
-          <Route exact path="/admin/caracteristicas" element={<CrearCaracteristicas/>} />
 
           <Route exact path="/empresa/dashboard" element={<DashboardEmpresa />} />
           <Route exact path="/empresa/puestos" element={<MisPuestos />} />
@@ -88,6 +127,7 @@ function Main() {
           <Route exact path="/empresa/candidatos" element={<Candidatos />} />
           <Route exact path="/empresa/candidatos/detalle" element={<DetalleCandidato />} />
 
+          <Route exact path="/oferente/dashboard" element={<DashboardOferente />} />
           <Route exact path="/oferente/habilidades" element={<MisHabilidades />} />
           <Route exact path="/oferente/cv" element={<MiCV />} />
 
