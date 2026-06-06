@@ -42,7 +42,7 @@ function DashboardAdmin() {
                     </Link>
 
                     <Link
-                        className="admin-dashboard__link"
+                        className="admin-dashboard__link admin-dashboard__link--full"
                         to="/admin/caracteristicas"
                     >
                         <button
@@ -50,18 +50,6 @@ function DashboardAdmin() {
                             type="button"
                         >
                             Características
-                        </button>
-                    </Link>
-
-                    <Link
-                        className="admin-dashboard__link"
-                        to="/admin/reportes"
-                    >
-                        <button
-                            className="admin-dashboard__button"
-                            type="button"
-                        >
-                            Reportes
                         </button>
                     </Link>
 

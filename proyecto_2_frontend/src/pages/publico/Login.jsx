@@ -12,6 +12,7 @@ function Login() {
         id: '',
         clave: ''
     });
+    const [error, setError] = useState('');
 
     function handleChange(e) {
         setFormData({
@@ -31,7 +32,11 @@ function Login() {
             });
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+
+                const errorData = await response.json();
+
+                setError(errorData.message);
+
                 return;
             }
 
@@ -108,6 +113,12 @@ function Login() {
                 </div>
 
             </form>
+
+            {error && (
+                <div className={s.error}>
+                    {error}
+                </div>
+            )}
         </div>
     );
 }

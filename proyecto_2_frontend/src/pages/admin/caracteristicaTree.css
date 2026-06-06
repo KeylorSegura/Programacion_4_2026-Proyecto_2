@@ -2,16 +2,12 @@
     margin-bottom: 4px;
 }
 
-.caracteristica-nodo__detalle {
-    border: 1px solid #ddd;
+.caracteristica-nodo__detalle,
+.caracteristica-nodo__detalle[open] {
+    border: 1px solid #99b0e8;
     border-radius: 6px;
     padding: 4px 8px;
-    background-color: #fafafa;
-}
-
-.caracteristica-nodo__detalle[open] {
     background-color: #f0f4ff;
-    border-color: #99b0e8;
 }
 
 .caracteristica-nodo__resumen {
@@ -21,7 +17,6 @@
     cursor: pointer;
     padding: 4px 0;
     list-style: none;
-    user-select: none;
 }
 
 .caracteristica-nodo__resumen::-webkit-details-marker {
