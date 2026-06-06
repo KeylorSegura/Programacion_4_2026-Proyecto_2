@@ -39,8 +39,9 @@ function Login() {
             localStorage.setItem("token", token);
 
             const payload = JSON.parse(atob(token.split('.')[1]));
+            const tipo = Array.isArray(payload.scope) ? payload.scope[0] : payload.scope;
 
-            switch (payload.tipo) {
+            switch (tipo) {
                 case 'Empresa':
                     navigate('/empresa/dashboard');
                     break;
@@ -96,11 +97,13 @@ function Login() {
                     </div>
                 </div>
 
+                <br/>
+
                 <div className={s.section}>
                     <input
                         type="submit"
                         value="Login"
-                        className="button"
+                        className={s.button}
                     />
                 </div>
 
