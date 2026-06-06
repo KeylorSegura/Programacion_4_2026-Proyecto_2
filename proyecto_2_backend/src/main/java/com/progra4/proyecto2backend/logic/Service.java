@@ -393,6 +393,22 @@ public class Service {
             if (!encoder.matches(usuario.getClave(), ubd.getClave())) {
                 throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
             }
+            boolean enabled = true;
+
+            if ("Empresa".equals(ubd.getTipo())) {
+                Empresa empresa = empresas.findByNombreUsuarioId(ubd.getId());
+                enabled = empresa != null && Byte.valueOf((byte) 1).equals(empresa.getEstado());
+            }
+
+            if ("Oferente".equals(ubd.getTipo())) {
+                Oferente oferente = oferentes.findByNombreUsuarioId(ubd.getId());
+                enabled = oferente != null && Byte.valueOf((byte) 1).equals(oferente.getEstado());
+            }
+
+            if (!enabled) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+            }
+
             return tokenService.generateToken(ubd);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
