@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { RiLogoutBoxLine } from 'react-icons/ri';
 import logo from './assets/logo.png';
 import './App.css';
 import Principal from "./pages/publico/Principal.jsx";
@@ -99,7 +100,7 @@ function Header() {
             <div className="navbar__login">
                 {!user
                     ? <Link className="navbar__login-link" to="/login">Login</Link>
-                    : <Link className="navbar__login-link" to="/" onClick={handleLogout}>{user.id} ({user.tipo})</Link>
+                    : <Link className="navbar__login-link" to="/" onClick={handleLogout}><RiLogoutBoxLine /> {user.id} ({user.tipo})</Link>
                 }
             </div>
         </header>

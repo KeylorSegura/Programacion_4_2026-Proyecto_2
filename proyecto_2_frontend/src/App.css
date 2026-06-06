@@ -70,6 +70,9 @@ main {
 .navbar__login-link {
   color: white;
   text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 
