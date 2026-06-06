@@ -25,6 +25,7 @@
 .caracteristicas__panel {
     flex: 1;
     display: flex;
+    width: 550px;
 }
 
 .caracteristicas__panel--arbol {
@@ -68,6 +69,8 @@
     width: 100%;
     padding: 6px;
     box-sizing: border-box;
+    color: black;
+    background-color: white;
 }
 
 .formulario__boton {

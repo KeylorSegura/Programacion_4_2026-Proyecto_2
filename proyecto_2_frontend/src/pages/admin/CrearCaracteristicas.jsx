@@ -43,7 +43,7 @@ function Caracteristicas() {
             );
 
             if (!responseRaices.ok || !responseCaracteristicas.ok) {
-                alert("Error cargando características");
+                alert("Error cargando características / No tienes permisos");
                 return;
             }
 

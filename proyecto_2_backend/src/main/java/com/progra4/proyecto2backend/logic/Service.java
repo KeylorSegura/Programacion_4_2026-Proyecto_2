@@ -327,7 +327,7 @@ public class Service {
         List<Caracteristica> lista;
 
         if (padreId == 0) {
-            lista = caracteristicas.findByPadreIsNull();
+            lista = caracteristicas.findRoots();
         } else {
             lista = caracteristicas.findByPadreId(padreId);
         }
@@ -386,32 +386,50 @@ public class Service {
 
 
 
+
+
     public String login(Usuario usuario) {
+
         try {
             Usuario ubd = usuarios.findById(usuario.getId()).get();
+
             BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
             if (!encoder.matches(usuario.getClave(), ubd.getClave())) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Clave o usuario incorrecto");
             }
+
             boolean enabled = true;
 
             if ("Empresa".equals(ubd.getTipo())) {
+
                 Empresa empresa = empresas.findByNombreUsuarioId(ubd.getId());
-                enabled = empresa != null && Byte.valueOf((byte) 1).equals(empresa.getEstado());
+                enabled = empresa != null && Byte.valueOf((byte)1).equals(empresa.getEstado());
             }
 
             if ("Oferente".equals(ubd.getTipo())) {
+
                 Oferente oferente = oferentes.findByNombreUsuarioId(ubd.getId());
-                enabled = oferente != null && Byte.valueOf((byte) 1).equals(oferente.getEstado());
+
+                enabled = oferente != null && Byte.valueOf((byte)1).equals(oferente.getEstado());
             }
 
             if (!enabled) {
-                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuario sin autorizar");
             }
 
             return tokenService.generateToken(ubd);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+
+        }
+        catch (ResponseStatusException e) {
+            throw e;
+        }
+        catch (Exception e) {
+
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Clave o usuario incorrecto"
+            );
         }
     }
 
