@@ -89,6 +89,7 @@ function Header() {
                 {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/dashboard">Dashboard</Link>}
                 {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Puestos</Link>}
 
+                {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/dashboard">Dashboard</Link>}
                 {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/habilidades">Habilidades</Link>}
             </nav>
 
@@ -113,6 +114,7 @@ function Main() {
           <Route exact path="/admin/dashboard" element={<DashboardAdmin />}/>
           <Route exact path="/admin/empresas-pendientes" element={<EmpresasPendientes />}/>
           <Route exact path="/admin/oferentes-pendientes" element={<OferentesPendientes />} />
+          <Route exact path="/admin/caracteristicas" element={<CrearCaracteristicas />} />
           <Route exact path="/login" element={<Login/>} />
 
           <Route exact path="/empresa/dashboard" element={<DashboardEmpresa />} />
@@ -121,6 +123,7 @@ function Main() {
           <Route exact path="/empresa/candidatos" element={<Candidatos />} />
           <Route exact path="/empresa/candidatos/detalle" element={<DetalleCandidato />} />
 
+          <Route exact path="/oferente/dashboard" element={<DashboardOferente />} />
           <Route exact path="/oferente/habilidades" element={<MisHabilidades />} />
           <Route exact path="/oferente/cv" element={<MiCV />} />
 
