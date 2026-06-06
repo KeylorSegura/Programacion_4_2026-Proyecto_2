@@ -3,16 +3,14 @@
 }
 
 .caracteristica-nodo__detalle {
-    border: 1px solid #ddd;
+    border: 1px solid;
     border-radius: 6px;
     padding: 4px 8px;
-    background-color: #fafafa;
+    background-color: #f0f4ff;
+    border-color: #99b0e8
 }
 
-.caracteristica-nodo__detalle[open] {
-    background-color: #f0f4ff;
-    border-color: #99b0e8;
-}
+
 
 .caracteristica-nodo__resumen {
     display: flex;
@@ -21,7 +19,6 @@
     cursor: pointer;
     padding: 4px 0;
     list-style: none;
-    user-select: none;
 }
 
 .caracteristica-nodo__resumen::-webkit-details-marker {

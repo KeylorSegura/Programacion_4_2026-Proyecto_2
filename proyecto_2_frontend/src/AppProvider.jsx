@@ -73,6 +73,13 @@ function AppProvider(props){
 
     });
 
+
+
+    const [crearCaracteristicaState, setCrearCaracteristicaState] = useState({
+        nombre: '',
+        idPadre: ''
+    });
+
     return(
         <AppContext.Provider value={{
             oferenteState,
@@ -88,7 +95,11 @@ function AppProvider(props){
             setHabilidadesState,
 
             cvState,
-            setCvState
+            setCvState,
+
+            crearCaracteristicaState,
+            setCrearCaracteristicaState
+
 
         }}>
             {props.children}

@@ -1,14 +1,19 @@
 import { useEffect, useState } from 'react';
 import './crearCaracteristica.css';
 import './caracteristicaTree.css';
+import { useContext} from 'react';
+import { AppContext } from '@/AppProvider.jsx';
 
 function Caracteristicas() {
 
     const [caracteristicas, setCaracteristicas] = useState([]);
     const [raices, setRaices] = useState([]);
 
-    const [nombre, setNombre] = useState('');
-    const [idPadre, setIdPadre] = useState('');
+
+    const {
+        crearCaracteristicaState,
+        setCrearCaracteristicaState
+    } = useContext(AppContext);
 
     const backend = "http://localhost:8080/api/admin";
 
@@ -66,11 +71,11 @@ function Caracteristicas() {
                         'Bearer ' + localStorage.getItem('token')
                 },
                 body: JSON.stringify({
-                    nombre,
+                    nombre: crearCaracteristicaState.nombre,
                     padreId:
-                        idPadre === ''
+                        crearCaracteristicaState.idPadre === ''
                             ? null
-                            : Number(idPadre)
+                            : Number(crearCaracteristicaState.idPadre)
                 })
             }
         );
@@ -84,8 +89,10 @@ function Caracteristicas() {
                 return;
             }
 
-            setNombre('');
-            setIdPadre('');
+            setCrearCaracteristicaState({
+                nombre: '',
+                idPadre: ''
+            });
 
             handleList();
 
@@ -118,6 +125,13 @@ function Caracteristicas() {
                                 <Nodo
                                     key={r.id}
                                     nodo={r}
+                                    onSeleccionar={id =>
+                                        setCrearCaracteristicaState(prev => ({
+                                            ...prev,
+                                            idPadre: String(id)
+                                        }))
+                                    }
+                                    idPadreSeleccionado={crearCaracteristicaState.idPadre}
                                 />
 
                             ))}
@@ -151,9 +165,12 @@ function Caracteristicas() {
                                     <input
                                         className="formulario__input"
                                         type="text"
-                                        value={nombre}
+                                        value={crearCaracteristicaState.nombre}
                                         onChange={(e) =>
-                                            setNombre(e.target.value)
+                                            setCrearCaracteristicaState(prev => ({
+                                                ...prev,
+                                                nombre: e.target.value
+                                            }))
                                         }
                                         required
                                     />
@@ -168,9 +185,12 @@ function Caracteristicas() {
 
                                     <select
                                         className="formulario__input"
-                                        value={idPadre}
+                                        value={crearCaracteristicaState.idPadre}
                                         onChange={(e) =>
-                                            setIdPadre(e.target.value)
+                                            setCrearCaracteristicaState(prev => ({
+                                                ...prev,
+                                                idPadre: e.target.value
+                                            }))
                                         }
                                     >
 
@@ -214,7 +234,7 @@ function Caracteristicas() {
     );
 }
 
-function Nodo({ nodo }) {
+function Nodo({ nodo, onSeleccionar, idPadreSeleccionado }) {
 
     const tieneHijos =
         nodo.caracteristicas &&
@@ -230,7 +250,14 @@ function Nodo({ nodo }) {
 
                 <summary className="caracteristica-nodo__resumen">
 
-                    <span className="caracteristica-nodo__nombre">
+                    <span
+                        className={
+                            idPadreSeleccionado === String(nodo.id)
+                                ? "caracteristica-nodo__nombre seleccionado"
+                                : "caracteristica-nodo__nombre"
+                        }
+                        onClick={() => onSeleccionar(nodo.id)}
+                    >
                         {nodo.nombre}
                     </span>
 
@@ -245,6 +272,8 @@ function Nodo({ nodo }) {
                             <Nodo
                                 key={hijo.id}
                                 nodo={hijo}
+                                onSeleccionar={onSeleccionar}
+                                idPadreSeleccionado={idPadreSeleccionado}
                             />
 
                         ))}

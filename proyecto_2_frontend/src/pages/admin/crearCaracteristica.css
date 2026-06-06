@@ -123,3 +123,12 @@ body {
 .panel__contenido {
     margin-top: 10px;
 }
+
+.caracteristica-nodo__nombre {
+    cursor: pointer;
+}
+
+.seleccionado {
+    font-weight: bold;
+    color: #2e7d32;
+}
