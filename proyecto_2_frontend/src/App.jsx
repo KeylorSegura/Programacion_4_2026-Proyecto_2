@@ -89,7 +89,7 @@ function Header() {
 
                 {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/dashboard">Dashboard</Link>}
                 {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/habilidades">Habilidades</Link>}
-                {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>}
+                <Link className="navbar__nav-link" to="/puestos">Buscar puestos</Link>
             </nav>
 
             <div className="navbar__login">
