@@ -65,7 +65,9 @@ function Principal() {
                             <div className={s.card} key={p.id}>
                                 <h3 className={s.card__title}>{p.empresa.nombre}</h3>
                                 <p className={s.card__description}>{p.descripcion}</p>
-                                <p className={s.card__salary}>₡ {p.salario.toFixed(2)}</p>
+                                <p className={s.card__salary}>
+                                    {p.salario != null ? `₡ ${p.salario.toFixed(2)}` : 'Salario no especificado'}
+                                </p>
 
                                 <button className={s.card__button} onClick={() => abrirDetalle(p)}>Ver detalle</button>
                             </div>
@@ -85,7 +87,9 @@ function Principal() {
 
                         <h2 className={s.card__description}>{puestoSeleccionado.descripcion}</h2>
 
-                        <p className={s.card__salary}>₡ {puestoSeleccionado.salario.toFixed(2)}</p>
+                        <p className={s.card__salary}>
+                            {puestoSeleccionado.salario != null ? `₡ ${puestoSeleccionado.salario.toFixed(2)}` : 'Salario no especificado'}
+                        </p>
 
                         <ul className={s.card__list}>
                             {puestoSeleccionado.puestocaracteristicas.map(pc => (

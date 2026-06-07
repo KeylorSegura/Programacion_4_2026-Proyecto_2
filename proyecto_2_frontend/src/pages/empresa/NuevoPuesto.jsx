@@ -110,45 +110,49 @@ function NuevoPuesto() {
             <h1 className={s['puesto-form__title']}>Crear Puesto</h1>
 
             <form className={s['puesto-form__form']} onSubmit={handleSubmit}>
-                <div className={s['puesto-form__field']}>
-                    <label className={s['puesto-form__label']}>Descripción</label>
-                    <input
-                        className={s['puesto-form__input']}
-                        type="text"
-                        value={descripcion}
-                        onChange={e => setDescripcion(e.target.value)}
-                    />
-                </div>
+                <div className={s['puesto-form__grid']}>
+                    <div className={s['puesto-form__col']}>
+                        <div className={s['puesto-form__field']}>
+                            <label className={s['puesto-form__label']}>Descripción</label>
+                            <input
+                                className={s['puesto-form__input']}
+                                type="text"
+                                value={descripcion}
+                                onChange={e => setDescripcion(e.target.value)}
+                            />
+                        </div>
 
-                <div className={s['puesto-form__field']}>
-                    <label className={s['puesto-form__label']}>Salario</label>
-                    <input
-                        className={s['puesto-form__input']}
-                        type="text"
-                        value={salario}
-                        onChange={e => setSalario(e.target.value)}
-                    />
-                </div>
+                        <div className={s['puesto-form__field']}>
+                            <label className={s['puesto-form__label']}>Salario</label>
+                            <input
+                                className={s['puesto-form__input']}
+                                type="text"
+                                value={salario}
+                                onChange={e => setSalario(e.target.value)}
+                            />
+                        </div>
 
-                <div className={s['puesto-form__field']}>
-                    <label className={s['puesto-form__label']}>Tipo de Publicación</label>
-                    <select
-                        className={s['puesto-form__select']}
-                        value={tipoPublicacion}
-                        onChange={e => setTipoPublicacion(e.target.value)}
-                    >
-                        <option value="Publica">Publica</option>
-                        <option value="Privada">Privada</option>
-                    </select>
-                </div>
+                        <div className={s['puesto-form__field']}>
+                            <label className={s['puesto-form__label']}>Tipo de Publicación</label>
+                            <select
+                                className={s['puesto-form__select']}
+                                value={tipoPublicacion}
+                                onChange={e => setTipoPublicacion(e.target.value)}
+                            >
+                                <option value="Publica">Publica</option>
+                                <option value="Privada">Privada</option>
+                            </select>
+                        </div>
+                    </div>
 
-                <div className={s['puesto-form__caracteristicas']}>
-                    <h3 className={s['puesto-form__caracteristicas-title']}>
-                        Características requeridas
-                    </h3>
-                    {caracteristicas.map(raiz => (
-                        <CaracteristicaTree key={`${treeResetKey}-${raiz.id}`} nodo={raiz} />
-                    ))}
+                    <div className={s['puesto-form__caracteristicas']}>
+                        <h3 className={s['puesto-form__caracteristicas-title']}>
+                            Características requeridas
+                        </h3>
+                        {caracteristicas.map(raiz => (
+                            <CaracteristicaTree key={`${treeResetKey}-${raiz.id}`} nodo={raiz} />
+                        ))}
+                    </div>
                 </div>
 
                 <button className={s['puesto-form__submit']} type="submit">
