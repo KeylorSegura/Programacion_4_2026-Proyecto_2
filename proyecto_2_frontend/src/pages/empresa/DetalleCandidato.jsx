@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import s from './DetalleCandidato.module.css';
 import BotonRegresar from '@/components/BotonRegresar.jsx';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function DetalleCandidato() {
     const [searchParams] = useSearchParams();
     const oferenteId = searchParams.get('id');
 
     const [oferente, setOferente] = useState(null);
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     const backend = "http://localhost:8080/api";
 
@@ -28,7 +31,7 @@ function DetalleCandidato() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -59,7 +62,10 @@ function DetalleCandidato() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                const msg = response.status === 404
+                    ? 'Este oferente no tiene CV cargado'
+                    : httpErrorMessage(response.status);
+                setModal({ open: true, type: 'error', message: msg });
                 return;
             }
 
@@ -133,6 +139,13 @@ function DetalleCandidato() {
             </section>
 
             <BotonRegresar />
+
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </div>
     );
 }

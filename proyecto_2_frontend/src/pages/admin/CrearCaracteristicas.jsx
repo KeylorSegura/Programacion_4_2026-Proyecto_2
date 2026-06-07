@@ -3,6 +3,8 @@ import './crearCaracteristica.css';
 import './caracteristicaTree.css';
 import { useContext } from 'react';
 import { AppContext } from '@/AppProvider.jsx';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function Caracteristicas() {
 
@@ -16,6 +18,7 @@ function Caracteristicas() {
     } = useContext(AppContext);
 
     const backend = "http://localhost:8080/api/admin";
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
 
     function obtenerAncestros(nodos, targetId, ancestros) {
@@ -52,7 +55,7 @@ function Caracteristicas() {
             );
 
             if (!responseRaices.ok || !responseCaracteristicas.ok) {
-                alert("Error cargando características / No tienes permisos");
+                setModal({ open: true, type: 'error', message: 'Error cargando características / No tienes permisos' });
                 return;
             }
 
@@ -91,7 +94,7 @@ function Caracteristicas() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -205,6 +208,12 @@ function Caracteristicas() {
 
             </div>
 
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </main>
     );
 }

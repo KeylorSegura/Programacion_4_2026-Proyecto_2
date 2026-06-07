@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import './Aprobaciones.css';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function EmpresasPendientes() {
 
     const [empresas, setEmpresas] = useState([]);
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     const backend = "http://localhost:8080/api/admin";
 
@@ -20,7 +23,7 @@ function EmpresasPendientes() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -56,7 +59,7 @@ function EmpresasPendientes() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -83,6 +86,13 @@ function EmpresasPendientes() {
                 </div>
 
             </div>
+
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </main>
     );
 }

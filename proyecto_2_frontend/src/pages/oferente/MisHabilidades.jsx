@@ -1,6 +1,8 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../../AppProvider";
 import s from "./MisHabilidades.module.css";
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function MisHabilidades() {
 
@@ -10,6 +12,7 @@ function MisHabilidades() {
     } = useContext(AppContext);
 
     const backend = "http://localhost:8080/api";
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
 
     useEffect(() => {
@@ -30,7 +33,7 @@ function MisHabilidades() {
             const response = await fetch(request);
             if (!response.ok) {
                 console.log(await response.text());
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
             const habilidades = await response.json();
@@ -38,7 +41,7 @@ function MisHabilidades() {
             const responseRaices = await fetch(requestRaices);
 
             if (!responseRaices.ok) {
-                alert("Error: " + responseRaices.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(responseRaices.status) });
                 return;
             }
 
@@ -61,7 +64,7 @@ function MisHabilidades() {
         (async () => {
             const response = await fetch(request);
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
             const data = await response.json();
@@ -96,7 +99,7 @@ function MisHabilidades() {
         (async () => {
             const response = await fetch(request);
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
             const data = await response.json();
@@ -155,7 +158,7 @@ function MisHabilidades() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -198,6 +201,13 @@ function MisHabilidades() {
                     handleAgregar={handleAgregar}
                 />
             </div>
+
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </>
     );
 }
