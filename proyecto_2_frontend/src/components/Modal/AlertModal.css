@@ -1,0 +1,245 @@
+/* ── Overlay ─────────────────────────────────────────────────────────────── */
+.nm-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 14, 26, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 16px;
+}
+
+/* ── Paper ───────────────────────────────────────────────────────────────── */
+.nm-paper {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 16px;
+  border: 1px solid #e2e6ee;
+  background: hsl(220, 30%, 100%);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  box-shadow: 0 8px 32px hsla(220, 20%, 10%, 0.12);
+  overflow: hidden;
+  font-family: inherit;
+}
+
+/* ── Header — layout fila (success / error / warning / info) ─────────────── */
+.nm-header-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 20px 14px 20px;
+}
+
+/* ── Header — layout centrado (delete) ──────────────────────────────────── */
+.nm-header-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px 20px 16px 20px;
+}
+
+/* ── Icon container ──────────────────────────────────────────────────────── */
+.nm-icon-box {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nm-icon-box--lg {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+}
+
+/* ── Title ───────────────────────────────────────────────────────────────── */
+.nm-title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.01em;
+  color: #111827;
+  line-height: 1.3;
+}
+
+.nm-title--center {
+  text-align: center;
+}
+
+/* ── Body ────────────────────────────────────────────────────────────────── */
+.nm-body {
+  padding: 0 20px 12px 20px;
+}
+
+.nm-body--centered {
+  padding: 0 24px 12px 24px;
+}
+
+.nm-message {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #6b7280;
+  line-height: 1.65;
+  white-space: pre-line;
+}
+
+.nm-message--center {
+  text-align: center;
+}
+
+/* ── Footer ──────────────────────────────────────────────────────────────── */
+.nm-footer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  padding: 20px;
+  border-top: 1px solid #e2e6ee;
+  background: #ffffff;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────────── */
+.nm-btn {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 7px 16px;
+  line-height: 1.4;
+  transition: color 0.2s ease, background 0.2s ease, border-color 0.2s ease, transform 0.22s ease;
+  white-space: nowrap;
+}
+
+.nm-btn-cancel {
+  color: #6b7280;
+  background: transparent;
+  border: 1px solid #d1d5db;
+}
+
+.nm-btn-cancel:hover {
+  color: #111827;
+  background: hsla(220, 20%, 50%, 0.08);
+  border-color: #9ca3af;
+}
+
+.nm-btn-confirm {
+  font-weight: 700;
+  border: none;
+}
+
+.nm-btn-confirm:hover {
+  transform: translateY(-1px);
+}
+
+/* ── Color variants — icon tint & confirm button ─────────────────────────── */
+
+/* success — #4caf50 */
+.nm-success .nm-icon-box {
+  background: rgba(76, 175, 80, 0.12);
+}
+
+.nm-success .nm-icon {
+  color: #4caf50;
+}
+
+.nm-btn-confirm.nm-confirm-success {
+  color: #2e7d32;
+  background: rgba(76, 175, 80, 0.12);
+}
+
+.nm-btn-confirm.nm-confirm-success:hover {
+  background: rgba(76, 175, 80, 0.2);
+}
+
+/* error — #f44336 */
+.nm-error .nm-icon-box {
+  background: rgba(244, 67, 54, 0.12);
+}
+
+.nm-error .nm-icon {
+  color: #f44336;
+}
+
+.nm-btn-confirm.nm-confirm-error {
+  color: #c62828;
+  background: rgba(244, 67, 54, 0.12);
+}
+
+.nm-btn-confirm.nm-confirm-error:hover {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+/* warning — #ff9800 */
+.nm-warning .nm-icon-box {
+  background: rgba(255, 152, 0, 0.12);
+}
+
+.nm-warning .nm-icon {
+  color: #e65100;
+}
+
+.nm-btn-confirm.nm-confirm-warning {
+  color: #e65100;
+  background: rgba(255, 152, 0, 0.12);
+}
+
+.nm-btn-confirm.nm-confirm-warning:hover {
+  background: rgba(255, 152, 0, 0.2);
+}
+
+/* info — #2196f3 */
+.nm-info .nm-icon-box {
+  background: rgba(33, 150, 243, 0.12);
+}
+
+.nm-info .nm-icon {
+  color: #0277bd;
+}
+
+.nm-btn-confirm.nm-confirm-info {
+  color: #0277bd;
+  background: rgba(33, 150, 243, 0.12);
+}
+
+.nm-btn-confirm.nm-confirm-info:hover {
+  background: rgba(33, 150, 243, 0.2);
+}
+
+/* delete uses same palette as error */
+.nm-delete .nm-icon-box {
+  background: rgba(244, 67, 54, 0.12);
+}
+
+.nm-delete .nm-icon {
+  color: #f44336;
+}
+
+.nm-btn-confirm.nm-confirm-delete {
+  color: #c62828;
+  background: rgba(244, 67, 54, 0.12);
+}
+
+.nm-btn-confirm.nm-confirm-delete:hover {
+  background: rgba(244, 67, 54, 0.2);
+}
+
+/* ── Responsive: stack buttons on mobile ─────────────────────────────────── */
+@media (max-width: 599px) {
+  .nm-footer {
+    flex-direction: column-reverse;
+  }
+
+  .nm-btn {
+    width: 100%;
+  }
+}
