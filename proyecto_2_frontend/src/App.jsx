@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+
 import { RiLogoutBoxLine } from 'react-icons/ri';
 import logo from './assets/logo.png';
 import './App.css';
@@ -23,6 +23,9 @@ import MisPuestos from "@/pages/empresa/MisPuestos.jsx";
 import NuevoPuesto from "@/pages/empresa/NuevoPuesto.jsx";
 import Candidatos from "@/pages/empresa/Candidatos.jsx";
 import DetalleCandidato from "@/pages/empresa/DetalleCandidato.jsx";
+
+import { useState, useEffect, useContext } from 'react';
+import { AppContext } from "@/AppProvider.jsx";
 
 function getUser(token) {
     try {
@@ -57,12 +60,14 @@ function Header() {
     const [user, setUser] = useState(initUser());
     const location = useLocation();
     const navigate = useNavigate();
+    const { resetAppState } = useContext(AppContext);
 
     useEffect(() => {
         setUser(initUser());
     }, [location]);
 
     function handleLogout() {
+        resetAppState();
         localStorage.removeItem('token');
         setUser(null);
         navigate('/');

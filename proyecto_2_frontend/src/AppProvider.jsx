@@ -80,6 +80,68 @@ function AppProvider(props){
         idPadre: ''
     });
 
+
+    function resetAppState() {
+
+        setBusquedaPuestosState({
+            caracteristicasRaiz: [],
+            caracteristicasSeleccionadas: [],
+            puestos: []
+        });
+
+        setOferenteState({
+            oferente: {
+                nombreUsuario: {
+                    id: "",
+                    clave: ""
+                },
+                nombre: "",
+                primerApellido: "",
+                nacionalidad: "",
+                telefono: "",
+                correoElectronico: "",
+                lugarResidencia: ""
+            },
+            error: ""
+        });
+
+        setEmpresaState({
+            empresa: {
+                nombreUsuario: {
+                    id: "",
+                    clave: ""
+                },
+                nombre: "",
+                localizacion: "",
+                correoElectronico: "",
+                telefono: "",
+                descripcion: ""
+            },
+            error: ""
+        });
+
+        setHabilidadesState({
+            habilidades: [],
+            caracteristicasActuales: [],
+            ruta: [],
+            habilidad: {
+                caracteristicaId: "",
+                nivel: ""
+            }
+        });
+
+        setCvState({
+            archivo: null,
+            tieneCV: false
+        });
+
+        setCrearCaracteristicaState({
+            nombre: '',
+            idPadre: ''
+        });
+    }
+
+
     return(
         <AppContext.Provider value={{
             oferenteState,
@@ -98,8 +160,9 @@ function AppProvider(props){
             setCvState,
 
             crearCaracteristicaState,
-            setCrearCaracteristicaState
+            setCrearCaracteristicaState,
 
+            resetAppState
 
         }}>
             {props.children}
