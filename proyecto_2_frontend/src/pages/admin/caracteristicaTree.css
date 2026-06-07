@@ -67,3 +67,18 @@
     border-left: 2px solid #d0d7f0;
     padding-left: 12px;
 }
+
+.caracteristica-nodo__toggle {
+    display: inline-block;
+    width: 16px;
+    flex-shrink: 0;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    color: #3a5bd9;
+    font-size: 0.75rem;
+}
+
+.caracteristica-nodo__toggle--vacio {
+    cursor: default;
+}
