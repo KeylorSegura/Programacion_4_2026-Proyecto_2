@@ -111,12 +111,13 @@ function BuscarPuestos() {
 
                     <div className={s.filtrador}>
                         <button className={`${s.filtrador__button} ${s['filtrador__button--filtrar']}`} onClick={handleFiltrar}>Filtrar</button>
-
-                        {busquedaPuestosState
-                                .caracteristicasRaiz
-                                .map(raiz => (
-                                    <CaracteristicaNodo key={raiz.id} nodo={raiz} seleccionadas={busquedaPuestosState.caracteristicasSeleccionadas} handleCheckbox={handleCheckbox}/>
-                                ))}
+                        <div className={s.arbol__container}>
+                            {busquedaPuestosState
+                                    .caracteristicasRaiz
+                                    .map(raiz => (
+                                        <CaracteristicaNodo key={raiz.id} nodo={raiz} seleccionadas={busquedaPuestosState.caracteristicasSeleccionadas} handleCheckbox={handleCheckbox}/>
+                                    ))}
+                        </div>
 
                     </div>
 

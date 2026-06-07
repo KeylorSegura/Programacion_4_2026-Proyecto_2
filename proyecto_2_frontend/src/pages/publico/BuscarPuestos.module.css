@@ -25,6 +25,7 @@ body {
     border-radius: 12px;
     padding: 2rem;
     max-width: 1600px;
+    min-height: 77.9vh;
     width: 100%;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
@@ -43,12 +44,14 @@ body {
 
 .container__right {
     flex: 1;
+
 }
 
 .page__title {
     text-align: center;
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 0px;
     color: #111827;
 }
 
@@ -59,12 +62,24 @@ body {
 }
 
 
+.arbol__container {
+    max-height: calc(100vh - 615px);
+    overflow-y: auto;
+    overflow-x: hidden;
+
+
+}
+
 .filtrador {
     background-color: #f9fafb;
     padding: 1.5rem;
     border-radius: 10px;
     margin-bottom: 2rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+
+    display: flex;
+    flex-direction: column;
 }
 
 .filtrador__title {
@@ -119,6 +134,10 @@ body {
     padding: 1.5rem;
     border-radius: 10px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+
+    max-height: 48vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .resultados__empty p {
