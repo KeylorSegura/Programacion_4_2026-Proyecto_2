@@ -51,7 +51,7 @@ function NuevoPuesto() {
 
         const body = {
             descripcion: descripcion,
-            salario: salario === '' ? null : Number(salario),
+            salario: Number(salario),
             tipoPublicacion: tipoPublicacion,
             caracteristicas: caracteristicasSeleccionadas
         };
@@ -102,6 +102,26 @@ function NuevoPuesto() {
                 };
             });
 
+        if (descripcion.trim() === '') {
+            setModal({ open: true, type: 'warning', message: 'Debes ingresar una descripción para el puesto.' });
+            return;
+        }
+
+        if (salario.trim() === '') {
+            setModal({ open: true, type: 'warning', message: 'Debes ingresar el salario del puesto.' });
+            return;
+        }
+
+        if (Number.isNaN(Number(salario)) || Number(salario) <= 0) {
+            setModal({ open: true, type: 'warning', message: 'El salario debe ser un número válido mayor que cero.' });
+            return;
+        }
+
+        if (caracteristicasSeleccionadas.length === 0) {
+            setModal({ open: true, type: 'warning', message: 'Debes seleccionar al menos una característica.' });
+            return;
+        }
+
         handleCrearPuesto(caracteristicasSeleccionadas);
     }
 
@@ -119,6 +139,7 @@ function NuevoPuesto() {
                                 type="text"
                                 value={descripcion}
                                 onChange={e => setDescripcion(e.target.value)}
+                                required
                             />
                         </div>
 
@@ -126,9 +147,11 @@ function NuevoPuesto() {
                             <label className={s['puesto-form__label']}>Salario</label>
                             <input
                                 className={s['puesto-form__input']}
-                                type="text"
+                                type="number"
+                                min="1"
                                 value={salario}
                                 onChange={e => setSalario(e.target.value)}
+                                required
                             />
                         </div>
 
