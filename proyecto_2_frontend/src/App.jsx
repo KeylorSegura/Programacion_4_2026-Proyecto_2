@@ -90,7 +90,7 @@ function Header() {
 
                 {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/dashboard">Dashboard</Link>}
                 {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Mis Puestos</Link>}
-                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos">Nuevo Puesto</Link>}
+                {user?.tipo === 'Empresa' && <Link className="navbar__nav-link" to="/empresa/puestos/nuevo">Nuevo Puesto</Link>}
 
                 {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/dashboard">Dashboard</Link>}
                 {user?.tipo === 'Oferente' && <Link className="navbar__nav-link" to="/oferente/habilidades">Habilidades</Link>}
