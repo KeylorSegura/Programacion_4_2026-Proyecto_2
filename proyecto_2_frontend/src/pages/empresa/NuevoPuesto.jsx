@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react';
 import s from './NuevoPuesto.module.css';
 import CaracteristicaTree from '@/components/CaracteristicaTree.jsx';
 import BotonRegresar from '@/components/BotonRegresar.jsx';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function NuevoPuesto() {
     const [descripcion, setDescripcion] = useState('');
     const [salario, setSalario] = useState('');
     const [tipoPublicacion, setTipoPublicacion] = useState('Publica');
     const [caracteristicas, setCaracteristicas] = useState([]);
+    const [treeResetKey, setTreeResetKey] = useState(0);
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     const backend = "http://localhost:8080/api";
 
@@ -28,7 +32,7 @@ function NuevoPuesto() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -68,15 +72,16 @@ function NuevoPuesto() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
-            alert("Puesto creado correctamente");
+            setModal({ open: true, type: 'success', message: 'Puesto creado correctamente' });
 
             setDescripcion('');
             setSalario('');
             setTipoPublicacion('Publica');
+            setTreeResetKey(k => k + 1);
         })();
     }
 
@@ -142,7 +147,7 @@ function NuevoPuesto() {
                         Características requeridas
                     </h3>
                     {caracteristicas.map(raiz => (
-                        <CaracteristicaTree key={raiz.id} nodo={raiz} />
+                        <CaracteristicaTree key={`${treeResetKey}-${raiz.id}`} nodo={raiz} />
                     ))}
                 </div>
 
@@ -152,6 +157,13 @@ function NuevoPuesto() {
             </form>
 
             <BotonRegresar />
+
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </div>
     );
 }

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import Modal from "react-modal";
 import s from './Principal.module.css';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 Modal.setAppElement('#root'); // Esto es para accesibilidad
 
@@ -8,6 +10,7 @@ function Principal() {
     const [puestos, setPuestos] = useState([]);
     const [modalOpen, setModalOpen] = useState(false);
     const [puestoSeleccionado, setPuestoSeleccionado] = useState(null);
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     const backend = "http://localhost:8080/api/publico";
 
@@ -15,12 +18,12 @@ function Principal() {
         const fetchPuestos = async () => {
             try {
                 const response = await fetch(`${backend}/principal`);
-                if (!response.ok) { alert("Error: " + response.status); return; }
+                if (!response.ok) { setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) }); return; }
                 const data = await response.json();
                 setPuestos(data);
             } catch (error) {
                 console.error(error);
-                alert("Error al conectarse con el servidor");
+                setModal({ open: true, type: 'error', message: 'Error al conectarse con el servidor' });
             }
         };
 
@@ -96,6 +99,13 @@ function Principal() {
                         <button  onClick={cerrarDetalle}>Cerrar</button>
                     </Modal>
                 )}
+
+                <AlertModal
+                    type={modal.type}
+                    message={modal.message}
+                    open={modal.open}
+                    onClose={() => setModal({ ...modal, open: false })}
+                />
             </div>
         </div>
     );

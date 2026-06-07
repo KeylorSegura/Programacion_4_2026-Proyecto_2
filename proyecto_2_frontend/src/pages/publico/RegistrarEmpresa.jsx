@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../../AppProvider";
 import s from './Registro.module.css';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function RegistrarEmpresa() {
 
@@ -8,6 +10,8 @@ function RegistrarEmpresa() {
         empresaState,
         setEmpresaState
     } = useContext(AppContext);
+
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     const backend = "http://localhost:8080/api";
 
@@ -49,10 +53,10 @@ function RegistrarEmpresa() {
         );
         const response = await fetch(request);
         if (!response.ok) {
-            alert("Error: " + response.status);
+            setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
             return;
         }
-        alert("Empresa registrada");
+        setModal({ open: true, type: 'success', message: 'Empresa registrada' });
         setEmpresaState({
             ...empresaState,
             empresa: {
@@ -124,6 +128,13 @@ function RegistrarEmpresa() {
                 <button className={s.form__button} type="submit">Guardar Empresa</button>
 
             </form>
+
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
 
         </div>
     );
