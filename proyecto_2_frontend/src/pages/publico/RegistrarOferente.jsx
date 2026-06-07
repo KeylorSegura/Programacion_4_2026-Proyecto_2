@@ -18,9 +18,14 @@ function RegistrarOferente() {
 
         const field = event.target;
 
-        const value = field.value;
-
         const name = field.name;
+
+        let value = field.value;
+
+        if (name === "telefono") {
+
+            value = value.replace(/\D/g, "");
+        }
 
         let oferente = {
             ...oferenteState.oferente
@@ -47,6 +52,14 @@ function RegistrarOferente() {
     async function handleSave(event) {
 
         event.preventDefault();
+
+        const telefono = oferenteState.oferente.telefono;
+
+        if (!/^\d+$/.test(telefono)) {
+
+            setModal({ open: true, type: 'error', message: 'El teléfono debe contener solo números, sin espacios' });
+            return;
+        }
 
         const request = new Request(
             backend + "/publico/registrar/oferente",
