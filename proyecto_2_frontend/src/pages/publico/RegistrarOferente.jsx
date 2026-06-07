@@ -1,6 +1,8 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../../AppProvider";
 import s from './Registro.module.css';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function RegistrarOferente() {
 
@@ -10,6 +12,7 @@ function RegistrarOferente() {
     } = useContext(AppContext);
 
     const backend = "http://localhost:8080/api";
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     function handleFieldChange(event) {
 
@@ -62,11 +65,11 @@ function RegistrarOferente() {
 
         if (!response.ok) {
 
-            alert("Error: " + response.status);
+            setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
             return;
         }
 
-        alert("Oferente registrado");
+        setModal({ open: true, type: 'success', message: 'Oferente registrado' });
 
         setOferenteState({
 
@@ -154,6 +157,12 @@ function RegistrarOferente() {
 
             </form>
 
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </div>
     );
 }

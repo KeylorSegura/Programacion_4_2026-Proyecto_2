@@ -2,12 +2,16 @@ import { useState, useEffect } from 'react';
 import s from './NuevoPuesto.module.css';
 import CaracteristicaTree from '@/components/CaracteristicaTree.jsx';
 import BotonRegresar from '@/components/BotonRegresar.jsx';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function NuevoPuesto() {
     const [descripcion, setDescripcion] = useState('');
     const [salario, setSalario] = useState('');
     const [tipoPublicacion, setTipoPublicacion] = useState('Publica');
     const [caracteristicas, setCaracteristicas] = useState([]);
+    const [treeResetKey, setTreeResetKey] = useState(0);
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     const backend = "http://localhost:8080/api";
 
@@ -28,7 +32,7 @@ function NuevoPuesto() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -47,7 +51,7 @@ function NuevoPuesto() {
 
         const body = {
             descripcion: descripcion,
-            salario: salario === '' ? null : Number(salario),
+            salario: Number(salario),
             tipoPublicacion: tipoPublicacion,
             caracteristicas: caracteristicasSeleccionadas
         };
@@ -68,15 +72,16 @@ function NuevoPuesto() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
-            alert("Puesto creado correctamente");
+            setModal({ open: true, type: 'success', message: 'Puesto creado correctamente' });
 
             setDescripcion('');
             setSalario('');
             setTipoPublicacion('Publica');
+            setTreeResetKey(k => k + 1);
         })();
     }
 
@@ -97,6 +102,26 @@ function NuevoPuesto() {
                 };
             });
 
+        if (descripcion.trim() === '') {
+            setModal({ open: true, type: 'warning', message: 'Debes ingresar una descripción para el puesto.' });
+            return;
+        }
+
+        if (salario.trim() === '') {
+            setModal({ open: true, type: 'warning', message: 'Debes ingresar el salario del puesto.' });
+            return;
+        }
+
+        if (Number.isNaN(Number(salario)) || Number(salario) <= 0) {
+            setModal({ open: true, type: 'warning', message: 'El salario debe ser un número válido mayor que cero.' });
+            return;
+        }
+
+        if (caracteristicasSeleccionadas.length === 0) {
+            setModal({ open: true, type: 'warning', message: 'Debes seleccionar al menos una característica.' });
+            return;
+        }
+
         handleCrearPuesto(caracteristicasSeleccionadas);
     }
 
@@ -114,6 +139,7 @@ function NuevoPuesto() {
                                 type="text"
                                 value={descripcion}
                                 onChange={e => setDescripcion(e.target.value)}
+                                required
                             />
                         </div>
 
@@ -121,9 +147,11 @@ function NuevoPuesto() {
                             <label className={s['puesto-form__label']}>Salario</label>
                             <input
                                 className={s['puesto-form__input']}
-                                type="text"
+                                type="number"
+                                min="1"
                                 value={salario}
                                 onChange={e => setSalario(e.target.value)}
+                                required
                             />
                         </div>
 
@@ -145,7 +173,7 @@ function NuevoPuesto() {
                             Características requeridas
                         </h3>
                         {caracteristicas.map(raiz => (
-                            <CaracteristicaTree key={raiz.id} nodo={raiz} />
+                            <CaracteristicaTree key={`${treeResetKey}-${raiz.id}`} nodo={raiz} />
                         ))}
                     </div>
                 </div>
@@ -156,6 +184,13 @@ function NuevoPuesto() {
             </form>
 
             <BotonRegresar />
+
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </div>
     );
 }

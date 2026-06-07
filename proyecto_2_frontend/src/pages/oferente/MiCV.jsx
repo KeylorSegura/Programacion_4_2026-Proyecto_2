@@ -1,6 +1,8 @@
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { AppContext } from "../../AppProvider";
 import s from "./MiCV.module.css";
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function MiCV() {
 
@@ -12,6 +14,7 @@ function MiCV() {
     const backend = "http://localhost:8080/api";
 
     const archivo = useRef();
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
 
 
@@ -31,7 +34,7 @@ function MiCV() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -56,7 +59,7 @@ function MiCV() {
         event.preventDefault();
 
         if (archivo.current.files.length === 0) {
-            alert("Debe seleccionar un archivo");
+            setModal({ open: true, type: 'warning', message: 'Debe seleccionar un archivo' });
             return;
         }
 
@@ -77,11 +80,11 @@ function MiCV() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
-            alert("CV subido correctamente");
+            setModal({ open: true, type: 'success', message: 'CV subido correctamente' });
 
             setCvState({
                 ...cvState,
@@ -104,7 +107,7 @@ function MiCV() {
         );
 
         if (!response.ok) {
-            alert("Error: " + response.status);
+            setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
             return;
         }
 
@@ -153,6 +156,12 @@ function MiCV() {
 
             </div>
 
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </div>
     );
 }

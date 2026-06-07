@@ -2,9 +2,12 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import s from './MisPuestos.module.css';
 import BotonRegresar from '@/components/BotonRegresar.jsx';
+import AlertModal from '../../components/Modal/AlertModal';
+import { httpErrorMessage } from '@/utils/httpErrors';
 
 function MisPuestos() {
     const [puestos, setPuestos] = useState([]);
+    const [modal, setModal] = useState({ open: false, type: 'error', message: '' });
 
     const backend = "http://localhost:8080/api";
 
@@ -25,7 +28,7 @@ function MisPuestos() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -58,7 +61,7 @@ function MisPuestos() {
             const response = await fetch(request);
 
             if (!response.ok) {
-                alert("Error: " + response.status);
+                setModal({ open: true, type: 'error', message: httpErrorMessage(response.status) });
                 return;
             }
 
@@ -119,6 +122,13 @@ function MisPuestos() {
             </table>
 
             <BotonRegresar />
+
+            <AlertModal
+                type={modal.type}
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal({ ...modal, open: false })}
+            />
         </div>
     );
 }

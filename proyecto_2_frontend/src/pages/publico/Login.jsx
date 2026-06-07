@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import s from './Login.module.css';
+import AlertModal from '../../components/Modal/AlertModal';
 
 const BACKEND = 'http://localhost:8080';
 
@@ -13,6 +14,7 @@ function Login() {
         clave: ''
     });
     const [error, setError] = useState('');
+    const [modal, setModal] = useState({ open: false, message: '' });
 
     function handleChange(e) {
         setFormData({
@@ -62,7 +64,7 @@ function Login() {
 
         } catch (error) {
             console.error(error);
-            alert("Error al iniciar sesión");
+            setModal({ open: true, message: 'Error al iniciar sesión' });
         }
     }
 
@@ -119,6 +121,13 @@ function Login() {
                     {error}
                 </div>
             )}
+
+            <AlertModal
+                type="error"
+                message={modal.message}
+                open={modal.open}
+                onClose={() => setModal(m => ({ ...m, open: false }))}
+            />
         </div>
     );
 }
