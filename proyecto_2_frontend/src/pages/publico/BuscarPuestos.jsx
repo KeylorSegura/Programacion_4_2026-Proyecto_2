@@ -107,6 +107,7 @@ function BuscarPuestos() {
                     <h3 className={s.page__subtitle}>Filtros</h3>
 
                     <div className={s.filtrador}>
+                        <button className={`${s.filtrador__button} ${s['filtrador__button--filtrar']}`} onClick={handleFiltrar}>Filtrar</button>
 
                         {busquedaPuestosState
                                 .caracteristicasRaiz
@@ -114,7 +115,6 @@ function BuscarPuestos() {
                                     <CaracteristicaNodo key={raiz.id} nodo={raiz} seleccionadas={busquedaPuestosState.caracteristicasSeleccionadas} handleCheckbox={handleCheckbox}/>
                                 ))}
 
-                        <button className={`${s.filtrador__button} ${s['filtrador__button--filtrar']}`} onClick={handleFiltrar}>Filtrar</button>
                     </div>
 
                 </div>
