@@ -13,14 +13,6 @@ body {
 
 
 
-/* Contenedor principal */
-/*.main {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    padding: 3rem 1rem;*/
-/*    min-height: 80.2vh;*/
-/*}*/
-
 .main__container {
     background-color: #fff;
     border-radius: 12px;
@@ -90,6 +82,10 @@ body {
     background-color: #eef2ff;
 }
 
+.habilidades__row.deshabilitada:hover {
+    background-color:  #fff;
+}
+
 .habilidades__thead {
     background-color: #e5e7eb;
 }
@@ -103,6 +99,14 @@ body {
 }
 
 .habilidades__tbody .habilidades__row:nth-child(even) {
+    background-color: #f3f4f6;
+}
+
+.habilidades__tbody .habilidades__row:nth-child(even):hover {
+    background-color: #E3E9FA;
+}
+
+.habilidades__tbody .habilidades__row.deshabilitada:nth-child(even):hover {
     background-color: #f3f4f6;
 }
 
@@ -192,6 +196,12 @@ body {
 .habilidades-form__button:hover {
     background-color: #2563eb;
     transform: translateY(-2px);
+}
+
+.habilidades-form__button:disabled {
+    background-color: gray;
+    cursor: no-drop;
+    opacity: 0.9;
 }
 
 .habilidades__cell a.habilidades__link {

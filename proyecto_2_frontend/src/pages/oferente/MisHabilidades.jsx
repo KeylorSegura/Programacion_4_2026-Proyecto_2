@@ -252,10 +252,10 @@ function MapaHabilidades({ruta, caracteristicasActuales, handleEntrar, handleVol
                 <tbody className={s.habilidades__tbody}>
                 {
                     caracteristicasActuales.map(caracteristica =>
-                        <tr className={s.habilidades__row} key={caracteristica.id}>
+                        <tr className={`${s.habilidades__row} ${caracteristica.tieneHijos ? s.activa : s.deshabilitada}`} key={caracteristica.id} onClick={ caracteristica.tieneHijos ? () => handleEntrar(caracteristica) : undefined} >
                             <td className={s.habilidades__cell}>{caracteristica.nombre}</td>
                             <td className={s.habilidades__cell}>
-                                <button className={s["habilidades-form__button"]} onClick={() => handleEntrar(caracteristica)}>Entrar</button>
+                                <button className={s["habilidades-form__button"]} onClick={() => handleEntrar(caracteristica)} disabled={!caracteristica.tieneHijos}>Entrar</button>
                             </td>
                         </tr>
                     )

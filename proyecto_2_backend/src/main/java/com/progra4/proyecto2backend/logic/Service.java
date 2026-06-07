@@ -319,7 +319,7 @@ public class Service {
 
         return caracteristicas.findByPadreId(padreId)
                 .stream()
-                .map(c -> Map.<String, Object>of("id", c.getId(), "nombre", c.getNombre()))
+                .map(c -> Map.<String, Object>of("id", c.getId(), "nombre", c.getNombre(), "tieneHijos", caracteristicas.existsByPadreId(c.getId())))
                 .toList();
     }
 
@@ -333,7 +333,7 @@ public class Service {
         }
 
         return lista.stream()
-                .map(c -> Map.<String, Object>of("id", c.getId(), "nombre", c.getNombre()))
+                .map(c -> Map.<String, Object>of("id", c.getId(), "nombre", c.getNombre(), "tieneHijos", caracteristicas.existsByPadreId(c.getId())))
                 .toList();
     }
 
