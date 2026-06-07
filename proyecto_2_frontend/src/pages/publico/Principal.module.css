@@ -114,6 +114,11 @@
     height: auto;
     min-width: 300px;
     min-height: 150px;
+
+
+    max-height: 48vh;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .modal button{
