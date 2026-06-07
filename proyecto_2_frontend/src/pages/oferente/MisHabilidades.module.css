@@ -23,6 +23,7 @@ body {
     display: flex;
     flex-direction: row;
     min-height: 700px;
+    max-height: 700px;
 }
 
 .page {
@@ -98,6 +99,18 @@ body {
     background-color: #e5e7eb;
 }
 
+.tabla__container {
+    max-height: 423px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.tabla__container_mapa {
+    max-height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
+
+}
 .habilidades__tbody .habilidades__row:nth-child(even) {
     background-color: #f3f4f6;
 }
@@ -265,8 +278,4 @@ body {
     outline: none;
     border-color: #2563eb;
     box-shadow: 0 0 0 3px rgba(59,130,246,0.25);
-}
-.habilidades-form__input::-webkit-inner-spin-button {
-    opacity: 0.9;
-    filter: invert(100%);
 }

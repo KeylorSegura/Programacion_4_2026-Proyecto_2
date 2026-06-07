@@ -218,28 +218,30 @@ function ListaHabilidades({ list }) {
         <div className={s.habilidades__panel + " " + s["habilidades__panel--lista"]}>
 
             <h1 className={s.page__title}>Mis Habilidades</h1>
-            <table className={s.habilidades__table}>
-                <thead className={s.habilidades__thead}>
-                <tr className={s.habilidades__row}>
-                    <th className={s.habilidades__header}>Característica</th>
-                    <th className={s.habilidades__header}>Nivel</th>
-                </tr>
-                </thead>
+            <div className={s.tabla__container}>
+                <table className={s.habilidades__table}>
+                    <thead className={s.habilidades__thead}>
+                    <tr className={s.habilidades__row}>
+                        <th className={s.habilidades__header}>Característica</th>
+                        <th className={s.habilidades__header}>Nivel</th>
+                    </tr>
+                    </thead>
 
-                <tbody className={s.habilidades__tbody}>
+                        <tbody className={s.habilidades__tbody}>
 
-                {
-                    list.map((habilidad, index) =>
+                            {
+                                list.map((habilidad, index) =>
 
-                        <tr className={s.habilidades__row} key={index}>
-                            <td className={s.habilidades__cell}>{habilidad.ruta}</td>
-                            <td className={s.habilidades__cell}>{habilidad.nivel}</td>
-                        </tr>
-                    )
-                }
+                                    <tr className={s.habilidades__row} key={index}>
+                                        <td className={s.habilidades__cell}>{habilidad.ruta}</td>
+                                        <td className={s.habilidades__cell}>{habilidad.nivel}</td>
+                                    </tr>
+                                )
+                            }
 
-                </tbody>
-            </table>
+                        </tbody>
+                </table>
+            </div>
         </div>
     );
 }
@@ -258,20 +260,22 @@ function MapaHabilidades({ruta, caracteristicasActuales, handleEntrar, handleVol
             </div>
             <br />
             <h3 className={s.habilidades__subtitle}>Subcategorías</h3>
-            <table className={s.habilidades__table}>
-                <tbody className={s.habilidades__tbody}>
-                {
-                    caracteristicasActuales.map(caracteristica =>
-                        <tr className={`${s.habilidades__row} ${caracteristica.tieneHijos ? s.activa : s.deshabilitada}`} key={caracteristica.id} onClick={ caracteristica.tieneHijos ? () => handleEntrar(caracteristica) : undefined} >
-                            <td className={s.habilidades__cell}>{caracteristica.nombre}</td>
-                            <td className={s.habilidades__cell}>
-                                <button className={s["habilidades-form__button"]} onClick={() => handleEntrar(caracteristica)} disabled={!caracteristica.tieneHijos}>Entrar</button>
-                            </td>
-                        </tr>
-                    )
-                }
-                </tbody>
-            </table>
+            <div className={s.tabla__container_mapa}>
+                <table className={s.habilidades__table}>
+                    <tbody className={s.habilidades__tbody}>
+                    {
+                        caracteristicasActuales.map(caracteristica =>
+                            <tr className={`${s.habilidades__row} ${caracteristica.tieneHijos ? s.activa : s.deshabilitada}`} key={caracteristica.id} onClick={ caracteristica.tieneHijos ? () => handleEntrar(caracteristica) : undefined} >
+                                <td className={s.habilidades__cell}>{caracteristica.nombre}</td>
+                                <td className={s.habilidades__cell}>
+                                    <button className={s["habilidades-form__button"]} onClick={() => handleEntrar(caracteristica)} disabled={!caracteristica.tieneHijos}>Entrar</button>
+                                </td>
+                            </tr>
+                        )
+                    }
+                    </tbody>
+                </table>
+            </div>
         </div>
     );
 }
